@@ -1,22 +1,91 @@
-.input{
-    background-color: papayawhipcolor;
-    color: white ;
-    padding: 20px;
-    margin: 10px;
+.contenedor-global{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 100vw;
+    background-color: rgb(255, 255, 255);
+
+    
+}
+
+.cont-portada{
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+}
+.imagen-portada{
+  background-image: url(../../public/images/portada-registrar.jpg);
+  width: 400px; /* Ancho deseado del div */
+  height: 400px; /* Altura deseada del div */
+  background-size: cover; /* Ajusta la imagen para cubrir completamente el div */
+  background-position: center; /* Centra la imagen dentro del div */
+  background-repeat: no-repeat; /* Evita que la imagen se repita */
 }
 .cont-formulario{
-    display: flex;
+    display: flex;  
+    width: 40%;    
     justify-content: center;
     align-items: center;
     flex-direction: column;    
-    background-color: rgb(184, 35, 35);
-    width: 100vmax !important;
+    background-color: rgba(255, 255, 255, 0.925);
+    h1{
+        color: #2A454E;
+    }      
 }
+
+@media (max-width: 800px) {
+    .cont-formulario {
+      width: 100%;
+      margin: 15px;
+    }
+    .imagen-portada{
+        width: 350px; /* Ancho deseado del div */
+         height: 350px;
+    }
+  }
+
 .formulario{
     display: flex;
     flex-direction: column;
-    background-color: rgb(223, 221, 221);
-    width: 50%;
-    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    background-color: #75dece7a;
+    width: 90%;
+    padding: 15px;
+    overflow: auto;
    
 }
+.input{
+    background-color: papayawhipcolor;
+    color: rgb(12, 12, 12) ;
+    padding: 10px;
+    margin: 10px;
+    width: 80%;
+    border-radius: 10px;
+}
+.cont-fecha-cargo{
+    display: flex;
+    flex-direction: row;
+}
+
+.button {
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: #1a1a1a;
+    cursor: pointer;
+    transition: border-color 0.25s;
+    width: 20%;
+    color: white
+  }
+
+  .button:hover {
+    border-color: #646cff;
+  }
+  .button:focus,
+  .button:focus-visible {
+    outline: 4px auto -webkit-focus-ring-color;
+  }
