@@ -6,6 +6,7 @@ import RegistroPage from "./pages/RegistroPage";
 import LoginPage from "./pages/LoginPage";
 import InicioPage from "./pages/InicioPage";
 import "./index.css";
+import FormularioJustificacion from "./pages/FormularioJustificacion";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/inicio" element={< InicioPage/>} />
           <Route path="/registrar" element={<RegistroPage />} />
+          <Route path="/formularioJustificacion" element={<FormularioJustificacion/>} />
           <Route path="/justificaciones" element={<h1>Justificaciones</h1>} />
           <Route
             path="/justificaciones/:id"

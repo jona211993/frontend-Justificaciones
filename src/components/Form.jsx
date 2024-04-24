@@ -1,9 +1,8 @@
-import React from "react";
 import { useForm } from "react-hook-form";
-import { registerRequest } from "../API/auth.js";
+// import { registerRequest } from "../API/auth.js";
 
 function Form() {
-  const { register, handleSubmit, setValue } = useForm();
+  const { register, handleSubmit} = useForm();
   // Creamos la funcion que traera el ppost de auht
   const onSubmit = handleSubmit(async (values) => {
     console.log(values);

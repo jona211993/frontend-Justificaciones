@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import  { useState } from 'react'
 import { Button } from './button.jsx';
 
 function Nav() {
  let Links= [
     {name: 'Home', link: "/"},
-    {name: 'About', link: "/"},   
+    {name: 'About', link: "https://www.goexpertis.com"},   
     
  ];
 
