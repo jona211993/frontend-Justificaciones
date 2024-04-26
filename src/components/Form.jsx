@@ -1,13 +1,14 @@
 import { useForm } from "react-hook-form";
-// import { registerRequest } from "../API/auth.js";
+import { useAuth } from "../contexts/AuthContext.jsx";
 
 function Form() {
   const { register, handleSubmit} = useForm();
-  // Creamos la funcion que traera el ppost de auht
-  const onSubmit = handleSubmit(async (values) => {
-    console.log(values);
-    // const res = await registerRequest(values);
-    // console.log(res);
+ const {signIn} = useAuth();
+
+  // Creamos la funcion que traera el post de auht
+  const onSubmit = handleSubmit( (data) => {
+    signIn(data)
+    
   });
 
   return (
@@ -17,7 +18,9 @@ function Form() {
         Por favor, ingresa tus credenciales
       </p>
       <div className="mt-6 flex items-center justify-start" >
-        <form onSubmit={handleSubmit(onSubmit)} className=" flex flex-col items-start justify-center w-96 h-72">
+        <form 
+         onSubmit={handleSubmit(onSubmit)}                  
+         className=" flex flex-col items-start justify-center w-96 h-72">
           <label className="text-lg font-medium">Usuario</label>
           <input
             type="text"
