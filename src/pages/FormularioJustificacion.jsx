@@ -53,7 +53,8 @@ const nivel3Data = {
   ],
 };
 
-const FormularioJustificacion = () => {
+export const FormularioJustificacion = () => {
+
   const [selectedProvince, setSelectedProvince] = useState(null);
   const [selectedCity, setSelectedCity] = useState(null);
   const [selectedNivel3, setSelectedNivel3] = useState(null);
@@ -125,7 +126,6 @@ const FormularioJustificacion = () => {
 
   return (
     <>
-    <Nav></Nav>
     <Form
       initialValues={{
         nivel1: selectedProvince,
@@ -313,4 +313,3 @@ const FormularioJustificacion = () => {
   );
 };
 
-export default FormularioJustificacion;
