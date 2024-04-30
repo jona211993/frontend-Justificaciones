@@ -15,7 +15,7 @@ function App() {
       <Route path="/login" element={<LoginPage />} />
       //rutas protejidas
       <Route element={<ProtectecRoute/>}>
-        <Route path="/inicio/*" element={<InicioPage />} />
+        <Route path="/expertisRH/*" element={<InicioPage />} />
         <Route path="/registrar" element={<RegistroPage />} />
         <Route path="/formularioJustificacion" element={<FormularioJustificacion />}/>
       </Route>

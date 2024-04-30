@@ -7,15 +7,13 @@ import {FormularioJustificacion} from "../../pages/FormularioJustificacion"
  
 export const ContentView = () => {
   return (
-    <div className="bg-cyan-600 h-screen">
+    <div className="bg-gray-100 h-screen overflow-auto">
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/empleados" element={<Empleados />}></Route>
         <Route path="/justificaciones" element={<Justificaciones />}></Route>
         <Route path="/crearJust" element={<FormularioJustificacion></FormularioJustificacion>}></Route>
-        
-        /inicio/crearJust
-      </Routes>
+        </Routes>
     </div>
   );
 };

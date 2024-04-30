@@ -30,7 +30,7 @@ function Form() {
     // Redireccionar si el usuario está autenticado
     if (autenticado) {
       setErrores([]);
-      navigate("/inicio");
+      navigate("/expertisRH");
       
     }
   }, [autenticado,errores, setErrores]);

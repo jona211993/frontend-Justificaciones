@@ -9,7 +9,13 @@ export default {
       backgroundImage: {
         'icono-portada': "url('/images/icono-expertis.png')",
         
-      }
+      },
+      fontFamily: {
+        'montserrat': ['Montserrat'],
+        'lato': ['Lato'],
+        'garamond': ['Garamond'],
+        'roboto': ['Roboto+Flex']
+    }
     },
   },
   plugins: [],

@@ -2,85 +2,6 @@ body{
   background-color: rgb(8, 5, 27);
   }
 
-.titulo{
-    color: rgb(255, 255, 255);
-    font-size: large;
-    text-align: center;
-    font-family: Cambria, Cochin, serif;
-    width: 100%;
-    margin:  15px;
-}
-.niveles{
-    color: rgb(255, 255, 255);
-    display: flex;
-    flex-direction: column;     
-   
-}
-.selec-nivel{
-    display: flex;
-    flex-direction: column;
-    margin: 20px;
-  
-}
-.cont-1{
-    color: rgb(255, 255, 255);
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    flex-wrap: wrap;
-}
-
-.cont-asesor-grupo{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-around;
-    
-}
-
-.cont-observacion{
-    color: rgb(255, 255, 255);
-    width: 90%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin: 1rem;
-    
-}
-.asesor{
-    width: 50%;
-    margin: 30px;
-    color: rgb(255, 255, 255);
-}
-
-.grupo{
-    color: rgb(255, 255, 255);
-   display: flex;
-   flex-direction:  column;
-   align-items: center;
-   justify-content: center;
-   margin: 2em;
-   
-}
-
-.cont-logo{
-  
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;   
-   
-  }
-
-  .logo{
-    background-image : url("../images/logo.png");
-    height: 220px;
-    width: 220px;
-    border-radius: 150px;
-     
-  }
-
   .cont-boton{
     display: flex;
     justify-content: center;
@@ -90,8 +11,8 @@ body{
 
   .boton{
     background: #fff; /* color de fondo */
-    color: #4741d7; /* color de fuente */
-    border: 2px solid #4741d7; /* tamaño y color de borde */
+    color: #092e31; /* color de fuente */
+    border: 2px solid #0f302c; /* tamaño y color de borde */
     padding: 16px 20px;
     border-radius: 3px; /* redondear bordes */
     position: relative;
@@ -107,7 +28,7 @@ body{
 
   .boton::after{
     content: "";
-    background: #4741d7; /* color de fondo hover */
+    background: #338f83; /* color de fondo hover */
     position: absolute;
     z-index: -1;
     padding: 16px 20px;
