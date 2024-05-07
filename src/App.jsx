@@ -7,6 +7,8 @@ import InicioPage from "./pages/InicioPage";
 import "./index.css";
 import {FormularioJustificacion} from "./pages/FormularioJustificacion";
 import ProtectecRoute from "./ProtectecRoute";
+import Justificaciones from "./pages/views/Justificaciones";
+import SelectBuscador from "./components/buscador/SelectBuscador"
 
 function App() {
   return (
@@ -18,8 +20,9 @@ function App() {
         <Route path="/expertisRH/*" element={<InicioPage />} />
         <Route path="/registrar" element={<RegistroPage />} />
         <Route path="/formularioJustificacion" element={<FormularioJustificacion />}/>
+        <Route path="/justificaciones" element={<Justificaciones/>} />
       </Route>
-      <Route path="/justificaciones" element={<h1>Justificaciones</h1>} />
+      <Route path="/vacaciones" element={<SelectBuscador/>} />
       
     </Routes>
   );
