@@ -1,45 +1,95 @@
 import React, { useState, useEffect } from 'react';
-import { asesoresBySuperRequest } from '../../API/justificaciones.js';
+import { listarJustificacionesRequest } from '../../API/justificaciones.js';
+import { Table } from 'antd';
+
 
 export const Justificaciones = () => {
   // Estado para almacenar los datos de los asesores
-  const [asesores, setAsesores] = useState([]);
+  const [justificaciones, setJustificaciones] = useState([]);
 
   // Función para obtener los datos de los asesores
-  const obtenerAsesores = async () => {
+  const obtenerJustificaciones = async () => {
     try {
-      const response = await asesoresBySuperRequest('JORGE'); // Envía el grupo deseado
+      const response = await listarJustificacionesRequest(); // Envía el grupo deseado
       console.log(response.data);
-      setAsesores(response.data); // Actualiza el estado con los datos recibidos
+      setJustificaciones(response); // Actualiza el estado con los datos recibidos
     } catch (error) {
-      console.error('Hubo un error al obtener los asesores:', error);
+      console.error('Hubo un error al obtener las justificaciones:', error);
     }
   };
 
   // Llamada a la función para obtener los asesores al cargar el componente
   useEffect(() => {
-    obtenerAsesores();
+    obtenerJustificaciones();
+    
   }, []);
+  
+  // para el componente de table de ant design
+
+const columns = [
+  {
+    title: 'Fecha',
+    width: 100,
+    dataIndex: 'fecha',
+    fixed: 'left',
+  },
+  {
+    title: 'Asesor',
+    width: 300,
+    dataIndex: 'asesor',
+  },
+  {
+    title: 'Grupo',
+    width:100,
+    dataIndex: 'grupo',
+    fixed: 'left',
+  },
+  {
+    title: 'Tipo',
+    dataIndex: 'nivel1',
+    width:100
+  },
+ 
+  {
+    title: 'Ver',
+    fixed: 'right',
+    width: 90,
+    render: () => <a>Ver</a>,
+  },
+  {
+    title: 'Editar',
+    width: 90,
+    render: () => <a>Editar</a>,
+  },
+  {
+    title: 'Eliminar',
+    fixed: 'right',
+    width: 90,
+    render: () => <a>Eliminar</a>,
+  },
+];
+
+const data = justificaciones
+
+
+// ------------------------
+
+
 
   return (
     <div>
       <h2>Justificaciones</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Usuario</th>
-          </tr>
-        </thead>
-        <tbody>
-          {asesores.map(asesor => (
-            <tr key={asesor.id}>
-              <td>{asesor.id}</td>
-              <td>{asesor.usuario}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+     <Table
+       columns={columns}
+       dataSource={data}
+       scroll={{
+         x: 1300,
+       }}
+       pagination={false}
+       bordered
+     />
+
+    
     </div>
   );
 };

@@ -11,8 +11,8 @@ export const ContentView = () => {
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/empleados" element={<Empleados />}></Route>
-        <Route path="/justificaciones" element={<Justificaciones />}></Route>
         <Route path="/crearJust" element={<FormularioJustificacion></FormularioJustificacion>}></Route>
+        <Route path="/justificaciones" element={<Justificaciones />}></Route>
         </Routes>
     </div>
   );

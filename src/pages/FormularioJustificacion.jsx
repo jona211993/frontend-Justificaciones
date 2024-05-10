@@ -72,6 +72,7 @@ export const FormularioJustificacion = () => {
   const { TextArea } = Input;
   const obtenerGrupo = async () => {
     try {
+      console.log("el id_grupo del usuario es: "+user.user.id_grupo);
       const response = await grupoByIdRequest(user.user.id_grupo); // Envía el grupo deseado    
       setGrupo(response.data[0].nombre); // Actualiza el estado con los datos recibidos
     } catch (error) {

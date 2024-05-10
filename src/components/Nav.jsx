@@ -12,9 +12,9 @@ function Nav() {
   return (
     <div className='shadow-md w-full fixed top-0 left-0 '>
         <div className='md:flex items-center justify-between bg-cyan-950 py-4 md:px-10 px-7 ' >
-            <div className='font-bold text-2xl cursor-pointer felx items-center font-[Poppins] text-gray-100'>
+            <div className='flex flex-row gap-6 font-bold text-2xl cursor-pointer felx items-center font-[Poppins] text-gray-100'>
                 <span className='text-3xl text-white mr-1 pt-2'>
-                <ion-icon name="cube-outline"></ion-icon>
+                <img src="src\images\icono-logo.png" alt="logo" />
                 </span>
                 Expertis
             </div>
