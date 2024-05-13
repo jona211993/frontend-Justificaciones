@@ -78,3 +78,18 @@ export const asesoresBySuperRequest = (grupo) => {
             throw error; // Si necesitas propagar el error
           });
       };
+
+      export const datosJustificacionRequest = (id) => {     
+        // Realiza la petición POST con Axios
+        return axios.get(`/obtenerJustifPorID/${id}`)
+          .then(response => {
+            // Maneja la respuesta aquí
+            console.log(response.data);
+            return response.data; // Si necesitas devolver los datos
+          })
+          .catch(error => {
+            // Maneja los errores aquí
+            console.error('Hubo un error:', error);
+            throw error; // Si necesitas propagar el error
+          });
+      };

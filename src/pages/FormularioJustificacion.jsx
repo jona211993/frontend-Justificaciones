@@ -7,6 +7,7 @@ import { DatePicker } from "antd";
 import "../styles/formulario.css";
 import { asesoresBySuperRequest, grupoByIdRequest } from '../API/justificaciones';
 import axios from "axios";
+import 'animate.css';
 
 const { Option } = Select;
 const provinceData = ["FALTA", "TARDANZA", "PERMISO"];
@@ -186,10 +187,10 @@ useEffect(() => {
           nivel2: selectedCity,
           nivel3: selectedNivel3,
         }}
-        className=" w-full h-4/5 scroll-m-2 md:w-full"
+        className=" w-full h-4/5 scroll-m-2 md:w-full animate__animated animate__fadeInDown"
       >
         <div className="text-xl  text-center font-bold font-roboto p-5  md:text-5xl md:text-center">
-          <h1>Formulario de Justificaciones </h1>
+          <h1 style={{color: '#053B50'}}>Formulario de Justificaciones </h1>
         </div>
         <div className="flex flex-wrap gap-5 items-center justify-center md:w-full ">
             <div className="mt-3 w-full m-3 font-semibold md:text-xl md:w-3/4 h-16">

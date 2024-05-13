@@ -1,0 +1,14 @@
+.custom-table{
+  width: 100%;
+  
+}
+.custom-table .ant-table-thead > tr > th {
+    background-color:#176B87; /* Color de fondo para el encabezado de la columna */
+    color: aliceblue;
+    
+  }
+
+  .custom-table .ant-table-thead .span{
+   color: white
+    
+  }

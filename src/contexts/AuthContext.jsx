@@ -18,6 +18,7 @@ export const AuthProvider = ({children}) => {
   const [user, setUser] = useState(null);
   const [autenticado, setAutenticado] = useState(false);
   const [errores, setErrores] = useState([]);
+  const [idJust, setIdJust] = useState();
 
   const signup = async (user) => {
     try {
@@ -59,6 +60,7 @@ export const AuthProvider = ({children}) => {
         user,
         autenticado,
         errores,
+        idJust,setIdJust,
         setErrores,
       }}
     >

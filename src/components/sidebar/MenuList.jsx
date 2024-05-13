@@ -12,7 +12,7 @@ const { SubMenu, Item } = Menu;
 export const MenuList = () => {
 
   return (
-    <Menu theme='dark' mode='inline' className='h-screen mt-8 flex flex-col gap-4 text-sm relative'>
+    <Menu theme='dark' mode='inline' className='h-screen mt-8 flex flex-col gap-4 text-sm relative' defaultSelectedKeys={['home']}>
       <Item key="home" icon={<HomeOutlined/>}>
       <Link to="/expertisRH">HOME</Link>
       </Item>
