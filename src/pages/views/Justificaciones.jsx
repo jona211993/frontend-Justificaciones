@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { listarJustificacionesRequest } from "../../API/justificaciones.js";
 import { Table, Input, Button, Space } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined, EyeOutlined, UploadOutlined } from "@ant-design/icons";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import "../../styles/tabla.css";
 import 'animate.css';
@@ -27,6 +27,11 @@ export const Justificaciones = () => {
 
   const handleVer = (id) => {
     console.log("el id enviado es: "+id)
+    setIdJust(id)
+  };
+
+  const handleCargarPruebas = (id) => {
+    console.log("el id enviado  en prueba es: "+id)
     setIdJust(id)
   };
 
@@ -108,7 +113,7 @@ export const Justificaciones = () => {
         <Link to="/expertisRH/verJustificacion">            
         <Button
           className="acciones-button"
-          icon={<EyeOutlined style={{ color: "blue" }} />}
+          icon={<EyeOutlined style={{ color: "purple" }} />}
           onClick={() => handleVer(record.id)}
         />
         </Link>
@@ -123,17 +128,31 @@ export const Justificaciones = () => {
           icon={<EditOutlined style={{ color: "green" }} />}
           onClick={() => handleEditar(record.id)}
         />
+        
       ),
     },
     {
       title: "Eliminar",
-      width: 10,
+      width: 5,
       render: () => (
         <Button
           className="acciones-button"
           icon={<DeleteOutlined style={{ color: "red" }} />}
           onClick={() => handleEliminar(record.id)}
         />
+      ),
+    },
+    {      
+      title: "Pruebas",
+      width: 5,
+      render: (record) => (
+        <Link to="/expertisRH/cargaPruebas">            
+        <Button
+          className="acciones-button"
+          icon={<UploadOutlined style={{ color: "blue" }} />}
+          onClick={() => handleCargarPruebas(record.id)}
+        />
+        </Link>
       ),
     },
   ];

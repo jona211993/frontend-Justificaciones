@@ -5,6 +5,7 @@ import { Empleados } from "../../pages/views/Empleados";
 import { Justificaciones } from "../../pages/views/Justificaciones";
 import {FormularioJustificacion} from "../../pages/FormularioJustificacion"
 import { VerJustificacion } from "../../pages/views/VerJustificacion";
+import { CargaPruebas } from "../../pages/views/CargaPruebas";
  
 export const ContentView = () => {
   return (
@@ -15,6 +16,7 @@ export const ContentView = () => {
         <Route path="/crearJust" element={<FormularioJustificacion></FormularioJustificacion>}></Route>
         <Route path="/justificaciones" element={<Justificaciones />}></Route>
         <Route path="/verJustificacion" element={<VerJustificacion />} ></Route>
+        <Route path="/cargaPruebas" element={<CargaPruebas />} ></Route>
         </Routes>
     </div>
   );
