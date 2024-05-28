@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage";
 import RegistroPage from "./pages/RegistroPage";
 import LoginPage from "./pages/LoginPage";
 import InicioPage from "./pages/InicioPage";
+import { CargaPruebas } from "./pages/views/CargaPruebas";
 import "./index.css";
 import {FormularioJustificacion} from "./pages/FormularioJustificacion";
 import ProtectecRoute from "./ProtectecRoute";
@@ -21,6 +22,7 @@ function App() {
         <Route path="/registrar" element={<RegistroPage />} />
         <Route path="/formularioJustificacion" element={<FormularioJustificacion />}/>
         <Route path="/justificaciones" element={<Justificaciones/>} />
+        <Route path="/cargarPrueba" element={<CargaPruebas/>} />
       </Route>
       <Route path="/vacaciones" element={<SelectBuscador/>} />
       
