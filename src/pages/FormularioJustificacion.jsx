@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect} from "react";
 import { useAuth } from "../contexts/AuthContext";
-import { Form, Select, Space } from "antd";
-import { Input } from "antd";
-import { InputNumber } from "antd";
-import { DatePicker } from "antd";
+import { Form, Select, Space, Modal, Input, InputNumber, DatePicker } from "antd";
 import "../styles/formulario.css";
 import { asesoresBySuperRequest, grupoByIdRequest } from '../API/justificaciones';
 import axios from "axios";
 import 'animate.css';
+import moment from 'moment';
+import { useForm } from "antd/lib/form/Form";
+import { Link ,  useNavigate } from "react-router-dom";
 
 const { Option } = Select;
 const provinceData = ["FALTA", "TARDANZA", "PERMISO"];
@@ -55,91 +55,77 @@ const nivel3Data = {
 };
 
 export const FormularioJustificacion = () => {
-  const {user}= useAuth();
-//  console.log("Tenemos los datos del user aqui:");
-  // console.log(user.user.id_grupo);
+
+  const [form] = Form.useForm();
+  const { user } = useAuth();
   const [selectedProvince, setSelectedProvince] = useState(null);
   const [selectedCity, setSelectedCity] = useState(null);
   const [selectedNivel3, setSelectedNivel3] = useState(null);
   const [observacion, setObservacion] = useState("");
- // Estado para almacenar los datos de los asesores
- const [asesores, setAsesores] = useState([]);
- // Estado para almacenar el valor del asesor seleccionado
- const [asesorSeleccionado, setAsesorSeleccionado] = useState();
-   const [grupo, setGrupo] = useState();
-  const [fecha, setFecha] = useState("");
-  const [minutosPermiso, setMinutosPermiso] = useState(0); // Estado para almacenar los minutos de permiso
+  const [asesores, setAsesores] = useState([]);
+  const [asesorSeleccionado, setAsesorSeleccionado] = useState(null);
+  const [grupo, setGrupo] = useState(null);
+  const [fecha, setFecha] = useState(null);
+  const [minutosPermiso, setMinutosPermiso] = useState(0);
+  const navigate = useNavigate();
 
   const { TextArea } = Input;
+ 
+
   const obtenerGrupo = async () => {
     try {
-      console.log("el id_grupo del usuario es: "+user.user.id_grupo);
-      const response = await grupoByIdRequest(user.user.id_grupo); // Envía el grupo deseado    
-      setGrupo(response.data[0].nombre); // Actualiza el estado con los datos recibidos
+      const response = await grupoByIdRequest(user.user.id_grupo);
+      setGrupo(response.data[0].nombre);
     } catch (error) {
       console.error('Hubo un error al obtener grupo', error);
     }
   };
- // Función para obtener los datos de los asesores
- const obtenerAsesores = async () => {
-  try {
-    console.log("Valor de grupo:", grupo); 
-    const response = await asesoresBySuperRequest(grupo); // Envía el grupo deseado
-    setAsesores(response.data); // Actualiza el estado con los datos recibidos
-  } catch (error) {
-    console.error('Hubo un error al obtener los asesores:', error.name);
-  }
-};
- // Función para obtener el grupo del usuario logueado
 
+  const obtenerAsesores = async () => {
+    try {
+      const response = await asesoresBySuperRequest(grupo);
+      setAsesores(response.data);
+    } catch (error) {
+      console.error('Hubo un error al obtener los asesores:', error);
+    }
+  };
 
-//para obtener el id del asesor elegido:
-const obtenerIdAsesorElegido= (nombre) => {
-  const asesorElegido = asesores.find(asesor => asesor.usuario === nombre);  
-  // Si se encuentra un asesor con ese nombre, devuelve su id
-  if (asesorElegido) {
-    console.log("Se obtuvo el id del empleado elegido que es: "+asesorElegido.id)
-    return asesorElegido.id;
-  } else {
-    // Si no se encuentra ningún asesor con ese nombre, devuelve null o maneja el caso según tu necesidad
-    return null;
-  }
-};
+  const obtenerIdAsesorElegido = (nombre) => {
+    const asesorElegido = asesores.find(asesor => asesor.usuario === nombre);
+    return asesorElegido ? asesorElegido.id : null;
+  };
 
- // Llamada a la función para obtener los asesores al cargar el componente
- useEffect(() => {
-   obtenerGrupo();   
-}, []);
-useEffect(() => {
-  if (grupo !== "") { // O cualquier condición que indique que grupo está listo
-     obtenerAsesores();
-  }
-}, [grupo]);
- // Función para manejar el cambio en el Select de asesores
- const handleAsesorChange = (value) => {
-  console.log(value);
-  setAsesorSeleccionado(value);
-  
-};
+  useEffect(() => {
+    obtenerGrupo();
+  }, []);
+
+  useEffect(() => {
+    if (grupo) {
+      obtenerAsesores();
+    }
+  }, [grupo]);
+
+  const handleAsesorChange = (value) => {
+    setAsesorSeleccionado(value);
+  };
+
   const handleObservacionChange = (e) => {
     setObservacion(e.target.value);
   };
 
-
   const handleFechaChange = (date, dateString) => {
     setFecha(dateString);
-    console.log(dateString);
   };
 
   const handleProvinceChange = (value) => {
     setSelectedProvince(value);
-    setSelectedCity(null); // Reset city when province changes
-    setSelectedNivel3(null); // Reset nivel3 when province changes
+    setSelectedCity(null);
+    setSelectedNivel3(null);
   };
 
   const handleCityChange = (value) => {
     setSelectedCity(value);
-    setSelectedNivel3(null); // Reset nivel3 when city changes
+    setSelectedNivel3(null);
   };
 
   const handleNivel3Change = (value) => {
@@ -151,10 +137,18 @@ useEffect(() => {
   };
 
   const handleSubmit = async () => {
+    if (!selectedProvince || !selectedCity || !selectedNivel3 || !observacion || !asesorSeleccionado || !fecha || (selectedProvince === 'PERMISO' && minutosPermiso === 0)) {
+      Modal.warning({
+        title: 'Faltan Datos',
+        content: 'Por favor, complete todos los campos del formulario.',
+        duration: 2,
+      });
+      return;
+    }
+
     try {
-    
-      let idEmpleado= obtenerIdAsesorElegido(asesorSeleccionado)
-      // Aquí puedes incluir la lógica para enviar los datos del formulario y las imágenes al servidor
+      let idEmpleado = obtenerIdAsesorElegido(asesorSeleccionado);
+
       const formData = {
         nivel1: selectedProvince,
         nivel2: selectedCity,
@@ -167,169 +161,190 @@ useEffect(() => {
         minutos_permiso: minutosPermiso,
       };
 
-      console.log("se esta enviando en el body todo esto:"+formData.id_empleado)
-
-      const response = await axios.post(
-        "http://localhost:3000/api/crearJustificacion",
-        formData
-      );
+      const response = await axios.post("http://localhost:3000/api/crearJustificacion", formData);
       console.log("Respuesta del servidor:", response.data);
+
+      if (response.status === 200) {
+        Modal.success({
+          title: 'Éxito',
+          content: 'Se registró con éxito.',
+          onOk: () => {
+            setSelectedCity("");
+            setSelectedNivel3("");
+            setSelectedProvince("");
+            setFecha(null);
+            form.resetFields(); // Restablecer los campos del formulario
+            navigate('/expertisRH/justificaciones'); 
+          },
+        });
+
+        navigate('/expertisRH/justificaciones');
+      } else {
+        Modal.error({
+          title: 'Error',
+          content: 'Algo salió mal, inténtelo de nuevo.',
+        });
+      }
     } catch (error) {
       console.error("Error submitting form:", error);
+      Modal.error({
+        title: 'Error',
+        content: 'Algo salió mal, inténtelo de nuevo.',
+      });
     }
   };
 
   return (
-    
-      <Form
-        initialValues={{
-          nivel1: selectedProvince,
-          nivel2: selectedCity,
-          nivel3: selectedNivel3,
-        }}
-        className=" w-full h-4/5 scroll-m-2 md:w-full animate__animated animate__fadeInDown"
-      >
-        <div className="text-xl  text-center font-bold font-roboto p-5  md:text-5xl md:text-center">
-          <h1 style={{color: '#053B50'}}>Formulario de Justificaciones </h1>
+    <Form
+    form={form} // Pasa el objeto form al componente Form
+      initialValues={{
+        nivel1: selectedProvince,
+        nivel2: selectedCity,
+        nivel3: selectedNivel3,
+      }}
+      className="w-full h-4/5 scroll-m-2 md:w-full animate__animated animate__fadeInDown"
+    >
+      <div className="text-xl text-center font-bold font-roboto p-5 md:text-5xl md:text-center">
+        <h1 style={{color: '#053B50'}}>Formulario de Justificaciones </h1>
+      </div>
+      <div className="flex flex-wrap gap-5 items-center justify-center md:w-full ">
+        <div className="mt-3 w-full m-3 font-semibold md:text-xl md:w-3/4 h-16">
+          <h2>Asesor</h2>
+          <Form.Item name="asesor">
+            <Select
+              showSearch
+              placeholder="Seleccione un asesor"
+              value={asesorSeleccionado}
+              onChange={handleAsesorChange}
+              style={{ width: '100%' }}
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+            >
+              {asesores.map(asesor => (
+                <Option key={asesor.id} value={asesor.usuario}>
+                  {asesor.usuario}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
         </div>
-        <div className="flex flex-wrap gap-5 items-center justify-center md:w-full ">
-            <div className="mt-3 w-full m-3 font-semibold md:text-xl md:w-3/4 h-16">
-              <h2>Asesor</h2>
-              <Form.Item name="asesor">
-        <Select
-          showSearch
-          placeholder="Seleccione un asesor"
-          value={asesorSeleccionado}
-          onChange={handleAsesorChange}
-          style={{ width: '100%' }}
-          filterOption={(input, option) =>
-            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-          }
-        >
-          {asesores.map(asesor => (
-            <Option key={asesor.id} value={asesor.usuario}>
-              {asesor.usuario}
-            </Option>
-          ))}
-        </Select>
-      </Form.Item>
-            </div>
-            <div className=" flex flex-col font-semibold gap-2 text-sm ml-7 md:text-xl md:flex-row md:gap-x-72 ">
-                <div className="">
-                <h2>Fecha: </h2>
-                  <Form.Item className="">
-                    <DatePicker
-                      format="YYYY-MM-DD"
-                      placeholder="Selecciona una fecha"
-                      onChange={handleFechaChange}                      
-                    />
-                  </Form.Item>
-                </div>
-                <div className="">
-                  <h2>Minutos de permiso</h2>
-                  <Form.Item>
-                    <InputNumber
-                      min={0}
-                      max={600}
-                      defaultValue={minutosPermiso}
-                      onChange={handleChange}
-                      disabled={selectedProvince !== 'PERMISO'}
-                    />
-                  </Form.Item>
-                </div>
-            </div>
-            <div className="w-full m-1 flex flex-row p-3 font-semibold md:text-xl">
-              <Space
-                direction="vertical"
-                className=" gap-4 w-full" 
-                style={{
-                  marginTop: 0,
-                  display: "flex",
-                  flexWrap: "wrap"                
-                }}
-              >
-                <div className="">
-                  <h3>Nivel 1</h3>
-                  <Form.Item name="nivel1">
-                    <Select
-                      placeholder="Seleccione"
-                      onChange={handleProvinceChange}
-                      value={selectedProvince} 
-                      style={{ width: 200 }}                    
-                    >
-                      {provinceData.map((province) => (
-                        <Option key={province} value={province}>
-                          {province}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </div>
-                <div className="selec-nivel">
-                  <h3>Nivel 2</h3>
-                  <Form.Item name="nivel2">
-                    <Select
-                      placeholder="Elige"
-                      onChange={handleCityChange}
-                      value={selectedCity}
-                      style={{ width: 200 }}
-                      disabled={!selectedProvince}
-                    >
-                      {cityData[selectedProvince]?.map((city) => (
-                        <Option key={city} value={city}>
-                          {city}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </div>
-                <div className="">
-                  <h3>Nivel 3</h3>
-                  <Form.Item name="nivel3">
-                    <Select
-                      placeholder="Seleccione una opción de nivel 3"
-                      onChange={handleNivel3Change}
-                      value={selectedNivel3}                      
-                      disabled={!selectedCity}
-                      
-                    >
-                      {nivel3Data[selectedCity]?.map((nivel3Option) => (
-                        <Option key={nivel3Option} value={nivel3Option}>
-                          {nivel3Option}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </div>
-              </Space>
-            </div>
-
-           <div className="w-full flex items-center justify-center flex-col">
-           <div className=" font-semibold w-full m-2 md:w-5/6 md:text-xl">
-              <h2>Observacion</h2>
-              <Form.Item name="observacion">
-                <TextArea
-                  placeholder="Ingresa la observacion"
-                  value={observacion}
-                  onChange={handleObservacionChange}
-                  rows={5}
-                  maxLength={350}
-                />
+        <div className="flex flex-col font-semibold gap-2 text-sm ml-7 md:text-xl md:flex-row md:gap-x-72">
+          <div className="w-3/4">
+            <h2>Fecha: </h2>
+            <Form.Item>
+              <DatePicker
+                format="YYYY-MM-DD"
+                onChange={handleFechaChange}
+                style={{ width: '100%' }}
+                value={fecha ? moment(fecha, "YYYY-MM-DD") : null}
+              />
+            </Form.Item>
+          </div>
+          {selectedProvince === "PERMISO" && (
+            <div className="w-2/3">
+              <h2>Minutos de Permiso</h2>
+              <Form.Item>
+                <InputNumber min={0} onChange={handleChange} value={minutosPermiso} />
               </Form.Item>
             </div>
-            <div className="cont-boton">
-              <button className="boton" onClick={handleSubmit}>
-                Enviar
-              </button>              
+          )}
+        </div>
+
+        <div className="flex w-full justify-center items-center md:w-5/6">
+          <Space
+            direction="horizontal"
+            style={{
+              width: "100%",
+              justifyContent: "space-around",
+              flexWrap: "wrap"
+            }}
+          >
+            <div>
+              <h3>Nivel 1</h3>
+              <Form.Item name="nivel1">
+                <Select
+                 name="nivel1"
+                  placeholder="Seleccione"
+                  onChange={handleProvinceChange}
+                  value={selectedProvince}
+                  style={{ width: 200 }}
+                >
+                  {provinceData.map((province) => (
+                    <Option key={province} value={province}>
+                      {province}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </div>
+            <div className="selec-nivel">
+              <h3>Nivel 2</h3>
+              <Form.Item name="nivel2">
+                <Select
+                  name="nivel2"
+                  placeholder="Elige"
+                  onChange={handleCityChange}
+                  value={selectedCity}
+                  style={{ width: 200 }}
+                  disabled={!selectedProvince}
+                >
+                  {cityData[selectedProvince]?.map((city) => (
+                    <Option key={city} value={city}>
+                      {city}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
             </div>
             <div>
-             <br />
-             <br />
+              <h3>Nivel 3</h3>
+              <Form.Item name="nivel3">
+                <Select
+                  name="nivel3"
+                  placeholder="Seleccione una opción de nivel 3"
+                  onChange={handleNivel3Change}
+                  value={selectedNivel3}
+                  disabled={!selectedCity}
+                >
+                  {nivel3Data[selectedCity]?.map((nivel3Option) => (
+                    <Option key={nivel3Option} value={nivel3Option} name="nivel3">
+                      {nivel3Option}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
             </div>
-           </div>
+          </Space>
         </div>
-      </Form>
-      
-    
+
+        <div className="w-full flex items-center justify-center flex-col">
+          <div className="font-semibold w-full m-2 md:w-5/6 md:text-xl">
+            <h2>Observacion</h2>
+            <Form.Item name="observacion">
+              <TextArea
+               name="observacion"
+                placeholder="Ingresa la observacion"
+                value={observacion}
+                onChange={handleObservacionChange}
+                rows={5}
+                maxLength={350}
+              />
+            </Form.Item>
+          </div>
+          <div className="cont-boton">
+          
+            <button className="boton" onClick={handleSubmit}>
+              Enviar
+           
+           </button>
+          </div>
+          <div>
+            <br />
+            <br />
+          </div>
+        </div>
+      </div>
+    </Form>
   );
 };

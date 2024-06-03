@@ -62,6 +62,7 @@ export const AuthProvider = ({children}) => {
         errores,
         idJust,setIdJust,
         setErrores,
+        setAutenticado
       }}
     >
       {children}

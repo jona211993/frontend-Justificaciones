@@ -6,7 +6,7 @@ export const asesoresBySuperRequest = (grupo) => {
     const data = {
       grupo: grupo
     };
-    console.log("estes es data + "+data)
+    console.log("estes es data + "+data.grupo)
     // Realiza la petición POST con Axios
     return axios.post('/obtenerAsesoresPorSuper', data)
       .then(response => {
@@ -82,6 +82,23 @@ export const asesoresBySuperRequest = (grupo) => {
       export const datosJustificacionRequest = (id) => {     
         // Realiza la petición POST con Axios
         return axios.get(`/obtenerJustifPorID/${id}`)
+          .then(response => {
+            // Maneja la respuesta aquí
+            console.log(response.data);
+            return response.data; // Si necesitas devolver los datos
+          })
+          .catch(error => {
+            // Maneja los errores aquí
+            console.error('Hubo un error:', error);
+            throw error; // Si necesitas propagar el error
+          });
+      };
+
+      // Para poder obtener las pruebas de una justificacion
+
+      export const pruebasDeJustificacionRequest = (id) => {     
+        // Realiza la petición POST con Axios
+        return axios.get(`/obtenerPruebas/${id}`)
           .then(response => {
             // Maneja la respuesta aquí
             console.log(response.data);

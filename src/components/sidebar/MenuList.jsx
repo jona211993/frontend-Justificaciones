@@ -1,15 +1,29 @@
 import { Menu } from "antd";
-import { Link } from "react-router-dom";
+import { Link} from "react-router-dom";
+import { useEffect } from "react";
+
 import {
   HomeOutlined,
   TeamOutlined,
   AuditOutlined,
-  CalendarOutlined
+  CalendarOutlined,
+  LogoutOutlined
 } from "@ant-design/icons";
 
 const { SubMenu, Item } = Menu;
 
+
+
+
 export const MenuList = () => {
+  
+  const handleLogout = () => {
+    window.location.href = '/login';
+    // Recarga la página después de navegar a la página de inicio de sesión
+    window.location.reload();
+  };
+
+ 
 
   return (
     <Menu theme='dark' mode='inline' className='h-screen mt-8 flex flex-col gap-4 text-sm relative' defaultSelectedKeys={['home']}>
@@ -29,6 +43,9 @@ export const MenuList = () => {
       </SubMenu>
       <Item key="vacaciones" icon={<CalendarOutlined/>}>
         VACACIONES
+      </Item>
+      <Item key="logout" icon={<LogoutOutlined/>} onClick={handleLogout}>
+        Cerrar Sesion
       </Item>
     </Menu>
   );

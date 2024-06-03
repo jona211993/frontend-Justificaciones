@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
+import { useAuth } from "../../contexts/AuthContext";
 
 export const CargaPruebas = () => {
   const [acceptedFiles, setAcceptedFiles] = useState([]);
@@ -7,6 +8,7 @@ export const CargaPruebas = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [isUploaded, setIsUploaded] = useState(false);
+  const { idJust } = useAuth();
 
   const onDrop = useCallback((newFiles) => {
     if (acceptedFiles.length + newFiles.length > 4) {
@@ -70,20 +72,23 @@ export const CargaPruebas = () => {
   };
 
   const handleSave = async () => {
-    // Aquí envías las URLs al backend para guardarlas en la base de datos
+    // Aquí envías cada URL al backend individualmente para guardarlas en la base de datos
     try {
-      const response = await fetch("TU_API_BACKEND_URL", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ urls: fileUrls }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Error al guardar las URLs en la base de datos.");
+        console.log(fileUrls);
+      for (const url of fileUrls) {
+        const response = await fetch("http://localhost:3000/api/crearPrueba", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id_justificacion: idJust ,urlPrueba: url }),
+        });
+  
+        if (!response.ok) {
+          throw new Error("Error al guardar la URL en la base de datos.");
+        }
       }
-
+  
       // Manejar la respuesta del servidor
       console.log("URLs guardadas exitosamente en la base de datos.");
     } catch (error) {
@@ -92,9 +97,9 @@ export const CargaPruebas = () => {
   };
 
   return (
-    <div className="h-full">
-      <h1 className="text-xl text-cyan-900 text-center font-bold font-roboto p-5 md:text-5xl md:text-center">
-        Carga una prueba a la justificación
+    <div className="h-full  ">
+      <h1 className="text-xl text-cyan-900  text-center font-bold font-roboto p-3 md:text-5xl md:text-center">
+        Carga las pruebas de la justificación
       </h1>
       <form
         className="h-full flex flex-col items-center p-5 gap-9 "
@@ -102,7 +107,7 @@ export const CargaPruebas = () => {
       >
         {!isUploaded && acceptedFiles.length < 4 && (
           <div
-            className="bg-slate-800 w-2/4 h-1/4 flex items-center text-slate-200 justify-center"
+            className="bg-gray-400 border-4 rounded-2xl border-gray-700 border-dotted p-3 w-2/4 h-1/4 flex items-center text-slate-200 justify-center"
             {...getRootProps()}
           >
             <input {...getInputProps()} />
@@ -121,11 +126,11 @@ export const CargaPruebas = () => {
           </div>
         )}
         {errorMessage && <p className="text-red-600">{errorMessage}</p>}
-        <div className="flex flex-wrap gap-3 w-4/6 h-4/6 p-3 items-center justify-center bg-cyan-500 ">
+        <div className="flex flex-wrap gap-3 w-4/6 h-2/5 p-6  items-start justify-between  ">
           {acceptedFiles.map((file, index) => (
-            <div key={index} className="relative w-1/4 h-1/4">
+            <div key={index} className="relative w-1/4 h-2/4 ">
               <img
-                className="w-full h-full object-cover"
+                className="w-full h-full rounded-2xl"
                 src={URL.createObjectURL(file)}
                 alt={`prueba cargada ${index + 1}`}
               />

@@ -10,7 +10,7 @@ import 'animate.css';
 
 export const Justificaciones = () => {
   const [justificaciones, setJustificaciones] = useState([]);
-  const {  setIdJust} = useAuth();
+  const {  setIdJust } = useAuth();
   const obtenerJustificaciones = async () => {
     try {
       const response = await listarJustificacionesRequest();
@@ -37,7 +37,7 @@ export const Justificaciones = () => {
 
   const columns = [
     {
-      title: "Feccha",
+      title: "Fecha",
       width: 10,
       dataIndex: "fecha",
     },
@@ -162,22 +162,24 @@ export const Justificaciones = () => {
   });
 
   return (
-    <div className="flex  flex-col gap-4 items-center justify-start h-screen animate__animated animate__fadeIn">
+    <div className=" flex  flex-col gap-4 items-center justify-start h-vh animate__animated animate__fadeIn">
       <h2
         style={{ color: "#053B50" }}
         className="text-xl  text-center font-bold font-roboto p-5  md:text-5xl md:text-center"
       >
         Lista de Justificaciones
       </h2>
-      <div className="flex items-center justify-center w-11/12">
+      <div className="flex items-center justify-center w-11/12 h-screen">
         <Table
           className="custom-table"
           columns={columns}
           dataSource={data}
           scroll={{ x: 100 }}
-          pagination={true}
+          pagination={{ pageSize: 6 }}
+          onScroll={true}
           bordered
         />
+     
       </div>
     </div>
   );

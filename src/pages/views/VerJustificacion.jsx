@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
-import { datosJustificacionRequest } from "../../API/justificaciones";
+import { datosJustificacionRequest , pruebasDeJustificacionRequest } from "../../API/justificaciones";
 import { Descriptions } from "antd";
 import { Image } from 'antd';
 import 'animate.css';
@@ -8,7 +8,7 @@ import 'animate.css';
 export const VerJustificacion = () => {
   const { idJust } = useAuth();
   const [data, setData] = useState(null); // Estado para almacenar los datos
-
+  const [pruebas, setPruebas] = useState([]);
   useEffect(() => {
     const obtenerDatosJustificacion = async () => {
       try {
@@ -19,8 +19,18 @@ export const VerJustificacion = () => {
       }
     };
 
+    const obtenerPruebasJustificacion = async () => {
+      try {
+        const response = await pruebasDeJustificacionRequest(idJust);
+        setPruebas(response.data); // Almacena los datos en el estado
+      } catch (error) {
+        console.error("Hubo un error al obtener las pruebas de la justificacion", error);
+      }
+    };
+
     if (idJust) {
       obtenerDatosJustificacion(); // Llama a obtenerDatosJustificacion() solo si idJust está disponible
+      obtenerPruebasJustificacion();
     }
   }, [idJust]);
 
@@ -94,7 +104,7 @@ export const VerJustificacion = () => {
     }
   }
   return (
-    <div className="h-screen overflow-scroll animate__animated animate__fadeInTopRight">
+    <div className=" overflow-scroll h-full animate__animated animate__fadeInTopRight">
       <div>
         <h1
           style={{ color: "#053B50" }}
@@ -124,29 +134,24 @@ export const VerJustificacion = () => {
       </div>
       <h2 className="text-2xl font-bold text-cyan-900 w-full p-3">Pruebas: </h2>
       {/* Contenedor de las imagenes */}
-      <div className="flex p-2 gap-4 items-center justify-center flex-wrap">
+      <div className="flex p-2 gap-4 items-center justify-center flex-wrap  ">
+      {pruebas.map((prueba) => (
         <Image
+          key={prueba.id}
           width={200}
-          src="http://noticias.essalud.gob.pe/wp-content/uploads/2023/07/2-2.jpg"
+          src={prueba.urlPrueba}
         />
-        <Image
-          width={200}
-          src="http://noticias.essalud.gob.pe/wp-content/uploads/2022/07/IMG-20220714-WA0166.jpg"
-        />
-        <Image
-          width={200}
-          src="https://pbs.twimg.com/media/FNfqDRgWYAAHaGY?format=jpg&name=900x900"
-        />
-        <Image
-          width={200}
-          src="https://media.licdn.com/dms/image/C4E22AQGk0xD2iyYSpw/feedshare-shrink_2048_1536/0/1648511342810?e=2147483647&v=beta&t=-7khSIGbWIp2BflTNTZYFtKkog7_ev6b4iBTjVx2M04"
-        />       
+      ))}
 
       </div>
       <div>
         
       </div>
-        
+        <footer>
+          <br />
+          <br />
+          <br />
+        </footer>
     </div>
   );
 };
