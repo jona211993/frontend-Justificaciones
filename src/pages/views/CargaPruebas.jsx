@@ -52,7 +52,7 @@ export const CargaPruebas = () => {
       formData.append("folder", "EXPERTIS");
 
       const res = await fetch(
-        "https://api.cloudinary.com/v1_1/dg4qp6im3/image/upload",
+        import.meta.env.VITE_CLOUDINARY_URL,
         {
           method: "POST",
           body: formData,
@@ -76,7 +76,7 @@ export const CargaPruebas = () => {
     try {
         console.log(fileUrls);
       for (const url of fileUrls) {
-        const response = await fetch("http://localhost:3000/api/crearPrueba", {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/crearPrueba`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

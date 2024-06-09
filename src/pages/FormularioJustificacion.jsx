@@ -9,6 +9,9 @@ import moment from 'moment';
 import { useForm } from "antd/lib/form/Form";
 import { Link ,  useNavigate } from "react-router-dom";
 
+
+const API= import.meta.env.VITE_BACKEND_URL
+
 const { Option } = Select;
 const provinceData = ["FALTA", "TARDANZA", "PERMISO"];
 const cityData = {
@@ -161,7 +164,7 @@ export const FormularioJustificacion = () => {
         minutos_permiso: minutosPermiso,
       };
 
-      const response = await axios.post("http://localhost:3000/api/crearJustificacion", formData);
+      const response = await axios.post(`${API}/crearJustificacion`, formData);
       console.log("Respuesta del servidor:", response.data);
 
       if (response.status === 200) {
