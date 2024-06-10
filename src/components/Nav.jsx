@@ -14,7 +14,7 @@ function Nav() {
         <div className='md:flex items-center justify-between bg-cyan-950 py-4 md:px-10 px-7 ' >
             <div className='flex flex-row gap-6 font-bold text-2xl cursor-pointer felx items-center font-[Poppins] text-gray-100'>
                 <span className='text-3xl text-white mr-1 pt-2'>
-                <img src="src\images\icono-logo.png" alt="logo" />
+                <img src="public/images/icono-logo.png" alt="logo" />
                 </span>
                 Expertis
             </div>
