@@ -66,7 +66,7 @@ export const asesoresBySuperRequest = (grupo) => {
 
     export const listarJustificacionesRequest = () => {     
         // Realiza la petición POST con Axios
-        return axios.get('/obtenerJustificaciones',{withCredentials: true})
+        return axios.get('/obtenerJustificaciones')
           .then(response => {
             // Maneja la respuesta aquí
             console.log(response.data);
