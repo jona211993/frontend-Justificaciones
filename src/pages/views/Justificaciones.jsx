@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
-import { listarJustificacionesRequest } from "../../API/justificaciones.js";
+import { listarJustificacionesRequest, justificacionesByIdGrupoRequest} from "../../API/justificaciones.js";
 import { Table, Input, Button, Space } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { EditOutlined, DeleteOutlined, EyeOutlined, UploadOutlined } from "@ant-design/icons";
@@ -10,12 +10,13 @@ import 'animate.css';
 
 export const Justificaciones = () => {
   const [justificaciones, setJustificaciones] = useState([]);
-  const {  setIdJust } = useAuth();
+  const {  setIdJust , user} = useAuth();  
   const obtenerJustificaciones = async () => {
     try {
-      const response = await listarJustificacionesRequest();
-      console.log("estoy en justificaciones: "+response);
-      setJustificaciones(response); // Actualiza el estado con los datos recibidos
+
+      console.log("el grupo de mi usuario es el :  "+user.user.id_grupo);
+      const response = await justificacionesByIdGrupoRequest(user.user.id_grupo);      
+      setJustificaciones(response.data); // Actualiza el estado con los datos recibidos
     } catch (error) {
       console.error("Hubo un error al obtener las justificaciones:", error);
     }

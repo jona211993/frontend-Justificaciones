@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { useAuth } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export const CargaPruebas = () => {
   const [acceptedFiles, setAcceptedFiles] = useState([]);
@@ -9,6 +10,9 @@ export const CargaPruebas = () => {
   const [showModal, setShowModal] = useState(false);
   const [isUploaded, setIsUploaded] = useState(false);
   const { idJust } = useAuth();
+  const navigate = useNavigate();
+
+
 
   const onDrop = useCallback((newFiles) => {
     if (acceptedFiles.length + newFiles.length > 4) {
@@ -91,10 +95,14 @@ export const CargaPruebas = () => {
   
       // Manejar la respuesta del servidor
       console.log("URLs guardadas exitosamente en la base de datos.");
+      navigate('/expertisRH/justificaciones'); 
     } catch (error) {
       setErrorMessage("Error al guardar las URLs. Por favor, inténtalo de nuevo.");
     }
   };
+
+
+  
 
   return (
     <div className="h-full  ">

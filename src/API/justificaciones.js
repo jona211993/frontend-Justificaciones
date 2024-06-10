@@ -42,14 +42,14 @@ export const asesoresBySuperRequest = (grupo) => {
   };
 
   //? Para las justificaciones
-  export const justificacionesBySuperRequest = (grupo) => {
+  export const justificacionesByIdGrupoRequest = (grupo) => {
 
-    console.log("estes es grupo + "+grupo)
+    console.log("estes es grupo  "+grupo)
       // Define los datos que deseas enviar en el cuerpo
       const data = {
         grupo: grupo
       };
-      console.log("estes es data + "+data)
+      console.log("estes es data + "+data.grupo)
       // Realiza la petición POST con Axios
       return axios.post('/obtenerJustsPorSuper', data)
         .then(response => {
