@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
-import { listarJustificacionesRequest, justificacionesByIdGrupoRequest} from "../../API/justificaciones.js";
+import { listarJustificacionesRequest, justificacionesByIdGrupoRequest, eliminarJustificacionRequest} from "../../API/justificaciones.js";
 import { Table, Input, Button, Space } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { EditOutlined, DeleteOutlined, EyeOutlined, UploadOutlined } from "@ant-design/icons";
@@ -14,8 +14,9 @@ export const Justificaciones = () => {
   const obtenerJustificaciones = async () => {
     try {
 
-      console.log("el grupo de mi usuario es el :  "+user.user.id_grupo);
-      const response = await justificacionesByIdGrupoRequest(user.user.id_grupo);      
+      console.log("el id_grupo de mi usuario es el :  "+user.user.id_grupo);
+      console.log("el id_cargo de mi usuario es el :  "+user.user.id_cargo);
+      const response = await justificacionesByIdGrupoRequest(user.user.id_grupo, user.user.id_cargo);      
       setJustificaciones(response.data); // Actualiza el estado con los datos recibidos
     } catch (error) {
       console.error("Hubo un error al obtener las justificaciones:", error);
@@ -30,6 +31,28 @@ export const Justificaciones = () => {
     console.log("el id enviado es: "+id)
     setIdJust(id)
   };
+
+  const handleEliminar = async (id) => {
+    console.log("El ID enviado es: " + id);
+    setIdJust(id);
+    try {
+      console.log("El ID de justificación es: " + id);
+      const response = await eliminarJustificacionRequest(id);
+      if (response.status === 200) {       
+        return response.data;
+      } else {
+        console.error("Error al eliminar la justificación:", response.statusText);
+        // Maneja el caso en que el estado no sea 200
+        return null;
+      }
+    } catch (error) {
+      console.error("Hubo un error al eliminar la justificación:", error);
+      // Puedes manejar el error aquí, como mostrar un mensaje de error al usuario
+      return null;
+    }
+
+  };
+
 
   const handleCargarPruebas = (id) => {
     console.log("el id enviado  en prueba es: "+id)
@@ -135,12 +158,14 @@ export const Justificaciones = () => {
     {
       title: "Eliminar",
       width: 5,
-      render: () => (
+      render: (record) => (
+        
         <Button
           className="acciones-button"
           icon={<DeleteOutlined style={{ color: "red" }} />}
           onClick={() => handleEliminar(record.id)}
         />
+        
       ),
     },
     {      

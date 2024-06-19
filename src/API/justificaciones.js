@@ -42,12 +42,14 @@ export const asesoresBySuperRequest = (grupo) => {
   };
 
   //? Para las justificaciones
-  export const justificacionesByIdGrupoRequest = (grupo) => {
+  export const justificacionesByIdGrupoRequest = (grupo, cargo) => {
 
     console.log("estes es grupo  "+grupo)
+    console.log("estes es cargo  "+cargo)
       // Define los datos que deseas enviar en el cuerpo
       const data = {
-        grupo: grupo
+        grupo: grupo,
+        cargo: cargo
       };
       console.log("estes es data + "+data.grupo)
       // Realiza la petición POST con Axios
@@ -93,9 +95,24 @@ export const asesoresBySuperRequest = (grupo) => {
             throw error; // Si necesitas propagar el error
           });
       };
+  // Para eliinar la justif:
 
-      // Para poder obtener las pruebas de una justificacion
+  export const eliminarJustificacionRequest = (id) => {     
+    // Realiza la petición POST con Axios
+    return axios.delete(`/eliminarJustifPorID/${id}`)
+      .then(response => {
+        // Maneja la respuesta aquí
+        console.log(response.data);
+        return response.data; // Si necesitas devolver los datos
+      })
+      .catch(error => {
+        // Maneja los errores aquí
+        console.error('Hubo un error:', error);
+        throw error; // Si necesitas propagar el error
+      });
+  };
 
+ // Para poder obtener las pruebas de una justificacion
       export const pruebasDeJustificacionRequest = (id) => {     
         // Realiza la petición POST con Axios
         return axios.get(`/obtenerPruebas/${id}`)

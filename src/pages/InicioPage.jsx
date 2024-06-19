@@ -31,6 +31,7 @@ function InicioPage() {
             }}
             icon={colapsado ? <RightCircleOutlined /> : <LeftCircleOutlined />}
           />
+           
         </Header>
         <ContentView />
       </Layout>
