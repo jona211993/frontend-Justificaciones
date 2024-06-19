@@ -28,7 +28,7 @@ export const Justificaciones = () => {
   }, []);
 
   const handleVer = (id) => {
-    console.log("el id enviado es: "+id)
+    console.log("el id enviado es  : "+id)
     setIdJust(id)
   };
 
