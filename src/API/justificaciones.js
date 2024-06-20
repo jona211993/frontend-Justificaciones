@@ -83,7 +83,7 @@ export const asesoresBySuperRequest = (grupo) => {
 
       export const datosJustificacionRequest = (id) => {     
         // Realiza la petición POST con Axios
-        return axios.get(`/obtenerJustifPorID/${id}`)
+        return axios.get(`/obtenerJustifPorID/${id}`, {withCredentials: true})
           .then(response => {
             // Maneja la respuesta aquí
             console.log(response.data);
