@@ -159,13 +159,13 @@ export const Justificaciones = () => {
       title: "Eliminar",
       width: 5,
       render: (record) => (
-        
+        <Link to="/expertisRH"> 
         <Button
           className="acciones-button"
           icon={<DeleteOutlined style={{ color: "red" }} />}
           onClick={() => handleEliminar(record.id)}
         />
-        
+        </Link>
       ),
     },
     {      
