@@ -107,7 +107,7 @@ export const asesoresBySuperRequest = (grupo) => {
       })
       .catch(error => {
         // Maneja los errores aquí
-        console.error('Hubo un error :', error);
+        console.error('Hubo un error:', error);
         throw error; // Si necesitas propagar el error
       });
   };
