@@ -22,12 +22,15 @@ export const MenuList = () => {
   };
 
   return (
+    <div className="flex flex-col items-center">
+    <h1 className="pt-5 text-xl text-center">{user.user.usuario}</h1>
     <Menu
       theme="dark"
       mode="inline"
       className="h-screen mt-8 flex flex-col gap-4 text-sm relative"
       defaultSelectedKeys={["home"]}
     >
+      
       <Item key="home" icon={<HomeOutlined />}>
         <Link to="/expertisRH">HOME</Link>
       </Item>
@@ -62,5 +65,6 @@ export const MenuList = () => {
         Cerrar Sesion
       </Item>
     </Menu>
+    </div>
   );
 };
