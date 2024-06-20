@@ -23,7 +23,7 @@ export const MenuList = () => {
 
   return (
     <div className="flex flex-col items-center">
-    <h1 className="pt-5 text-xl text-center">{user.user.usuario}</h1>
+   
     <Menu
       theme="dark"
       mode="inline"
