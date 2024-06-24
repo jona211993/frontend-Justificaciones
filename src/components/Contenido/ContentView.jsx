@@ -9,7 +9,7 @@ import { CargaPruebas } from "../../pages/views/CargaPruebas";
  
 export const ContentView = () => {
   return (
-    <div className="bg-gray-100 h-screen">     
+    <div className=" h-full overflow-auto" >     
 
       <Routes>
         <Route path="/" element={<Home />}></Route>

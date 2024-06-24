@@ -198,6 +198,7 @@ export const FormularioJustificacion = () => {
   };
 
   return (
+    <div className="h-full md:w-full animate__animated animate__fadeInDown ">
     <Form
     form={form} // Pasa el objeto form al componente Form
       initialValues={{
@@ -205,12 +206,12 @@ export const FormularioJustificacion = () => {
         nivel2: selectedCity,
         nivel3: selectedNivel3,
       }}
-      className="w-full h-4/5 scroll-m-2 md:w-full animate__animated animate__fadeInDown"
+      
     >
-      <div className="text-xl text-center font-bold font-roboto p-5 md:text-5xl md:text-center">
+      <div className="text-xl text-center font-bold font-roboto p-3 md:text-5xl md:text-center">
         <h1 style={{color: '#053B50'}}>Formulario de Justificaciones </h1>
       </div>
-      <div className="flex flex-wrap gap-5 items-center justify-center md:w-full ">
+      <div className="flex flex-wrap overflow-y-scroll h-screen  gap-5 items-center justify-center md:w-full ">
         <div className="mt-3 w-full m-3 font-semibold md:text-xl md:w-3/4 h-16">
           <h2>Asesor</h2>
           <Form.Item name="asesor">
@@ -347,7 +348,15 @@ export const FormularioJustificacion = () => {
             <br />
           </div>
         </div>
+        <br />
+        <br />
+        <br />
       </div>
     </Form>
-  );
+    <br />
+    <br />
+    <br />
+
+    </div>
+      );
 };

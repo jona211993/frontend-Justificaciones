@@ -9,6 +9,8 @@ export const VerJustificacion = () => {
   const { idJust } = useAuth();
   const [data, setData] = useState(null); // Estado para almacenar los datos
   const [pruebas, setPruebas] = useState([]);
+
+  
   useEffect(() => {
     const obtenerDatosJustificacion = async () => {
       try {
@@ -83,18 +85,18 @@ export const VerJustificacion = () => {
           label: "Minutos Permiso",
           children: data.minutos_permiso,
         },
-        {
-          label: "Creado por:",
-          children: data.user_create,
-        },
-        {
-          label: "Modificad Por:",
-          children: data.user_update,
-        },
-        {
-          label: "Fecha de modificacion",
-          children: data.fec_update,
-        },
+        // {
+        //   label: "Creado por:",
+        //   children: data.user_create,
+        // },
+        // {
+        //   label: "Modificad Por:",
+        //   children: data.user_update,
+        // },
+        // {
+        //   label: "Fecha de modificacion",
+        //   children: data.fec_update,
+        // },
         {
           label: "Observacion",
           children: data.observacion,
@@ -104,7 +106,7 @@ export const VerJustificacion = () => {
     }
   }
   return (
-    <div className=" overflow-scroll h-full animate__animated animate__fadeInTopRight">
+    <div className=" overflow-scroll h-screen animate__animated animate__fadeInTopRight">
       <div>
         <h1
           style={{ color: "#053B50" }}
@@ -122,10 +124,10 @@ export const VerJustificacion = () => {
             column={{
               xs: 1,
               sm: 2,
-              md: 3,
-              lg: 3,
-              xl: 4,
-              xxl: 4,
+              md: 2,
+              lg: 2,
+              xl: 2,
+              xxl: 3,
             }}
             items={obtenerItems()}
             style={{ color: "red" }}
