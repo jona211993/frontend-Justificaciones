@@ -20,6 +20,7 @@ export const AuthProvider = ({children}) => {
   const [errores, setErrores] = useState([]);
   const [idJust, setIdJust] = useState();
 
+
   const signup = async (user) => {
     try {
       const res = await registerRequest(user);
@@ -60,7 +61,8 @@ export const AuthProvider = ({children}) => {
         user,
         autenticado,
         errores,
-        idJust,setIdJust,
+        idJust,
+        setIdJust,
         setErrores,
         setAutenticado
       }}

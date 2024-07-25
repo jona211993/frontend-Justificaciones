@@ -6,6 +6,7 @@ import { Justificaciones } from "../../pages/views/Justificaciones";
 import {FormularioJustificacion} from "../../pages/FormularioJustificacion"
 import { VerJustificacion } from "../../pages/views/VerJustificacion";
 import { CargaPruebas } from "../../pages/views/CargaPruebas";
+import { RegistrarSolicitudVacaciones } from "../../pages/views/RegistrarSolicitudVacaciones";
  
 export const ContentView = () => {
   return (
@@ -18,6 +19,7 @@ export const ContentView = () => {
         <Route path="/justificaciones" element={<Justificaciones />}></Route>
         <Route path="/verJustificacion" element={<VerJustificacion />} ></Route>
         <Route path="/cargaPruebas" element={<CargaPruebas />} ></Route>
+        <Route path="/crearSolicitudVacaciones" element={<RegistrarSolicitudVacaciones/>} ></Route>
         </Routes>
     </div>
   );

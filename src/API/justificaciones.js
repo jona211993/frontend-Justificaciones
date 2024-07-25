@@ -96,7 +96,6 @@ export const asesoresBySuperRequest = (grupo) => {
           });
       };
   // Para eliinar la justif:
-
   export const eliminarJustificacionRequest = (id) => {     
     // Realiza la petición POST con Axios
     return axios.delete(`/eliminarJustifPorID/${id}`)
@@ -111,6 +110,24 @@ export const asesoresBySuperRequest = (grupo) => {
         throw error; // Si necesitas propagar el error
       });
   };
+
+  //PAra editar las justificaciones:
+  export const editarJustificacionRequest = (id,datos) => {     
+    // Realiza la petición POST con Axios
+    console.log(id,datos.descuento,datos.penalidad)
+    return axios.put(`/editarJustifPorID/${id}`, datos)
+      .then(response => {
+        // Maneja la respuesta aquí
+        console.log(response.data);
+        return response.data; // Si necesitas devolver los datos
+      })
+      .catch(error => {
+        // Maneja los errores aquí
+        console.error('Hubo un error:', error);
+        throw error; // Si necesitas propagar el error
+      });
+  };
+
 
  // Para poder obtener las pruebas de una justificacion
       export const pruebasDeJustificacionRequest = (id) => {     

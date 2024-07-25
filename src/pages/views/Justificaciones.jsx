@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import {
   listarJustificacionesRequest,
   justificacionesByIdGrupoRequest,
-  eliminarJustificacionRequest
+  eliminarJustificacionRequest,
+  editarJustificacionRequest
 } from "../../API/justificaciones.js";
-import { Table, Input, Button, Space, DatePicker } from "antd";
+import { Table, Input, Button, Space, DatePicker, Modal, Radio } from "antd";
 import {
   SearchOutlined,
   EditOutlined,
@@ -21,15 +22,19 @@ import moment from 'moment';
 export const Justificaciones = () => {
   const [justificaciones, setJustificaciones] = useState([]);
   const { setIdJust, user } = useAuth();
-  const [fechaInicio, setFechaInicio] = useState(null); // Estado para fecha de inicio
-  const [fechaFin, setFechaFin] = useState(null); // Estado para fecha de fin
+  const [fechaInicio, setFechaInicio] = useState(null);
+  const [fechaFin, setFechaFin] = useState(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [currentJustificacion, setCurrentJustificacion] = useState(null);
+  const [descuento, setDescuento] = useState("NO");
+  const [penalidad, setPenalidad] = useState("NO");
 
   const obtenerJustificaciones = async () => {
     try {
       console.log("El id_grupo de mi usuario es: " + user.user.id_grupo);
       console.log("El id_cargo de mi usuario es: " + user.user.id_cargo);
       const response = await justificacionesByIdGrupoRequest(user.user.id_grupo, user.user.id_cargo);
-      setJustificaciones(response.data); // Actualiza el estado con los datos recibidos
+      setJustificaciones(response.data);
     } catch (error) {
       console.error("Hubo un error al obtener las justificaciones:", error);
     }
@@ -51,7 +56,7 @@ export const Justificaciones = () => {
       const response = await eliminarJustificacionRequest(id);
       if (response.status === 200) {
         console.log("Justificación eliminada con éxito.");
-        obtenerJustificaciones(); // Actualiza la lista después de eliminar
+        obtenerJustificaciones();
       } else {
         console.error("Error al eliminar la justificación:", response.statusText);
       }
@@ -63,6 +68,30 @@ export const Justificaciones = () => {
   const handleCargarPruebas = (id) => {
     console.log("El id enviado para cargar pruebas es: " + id);
     setIdJust(id);
+  };
+
+  const handleEditar = (id) => {
+    setCurrentJustificacion(id);
+    setIsModalVisible(true);
+  };
+
+  const handleOk = async () => {
+    try {
+      const response = await editarJustificacionRequest(currentJustificacion, { descuento, penalidad });
+      console.log( "mi estatus: ",response.status)
+      if (response.status === 200) {
+        setIsModalVisible(false);
+        obtenerJustificaciones();
+      } else {
+        console.error("Error al editar la justificación:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Hubo un error al editar la justificación:", error);
+    }
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
   };
 
   const columns = [
@@ -174,6 +203,47 @@ export const Justificaciones = () => {
       title: "Grupo",
       width: 150,
       dataIndex: "grupo",
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => (
+        <div style={{ padding: 8 }}>
+          <Input
+            placeholder="Buscar grupo"
+            value={selectedKeys[0]}
+            onChange={(e) =>
+              setSelectedKeys(e.target.value ? [e.target.value] : [])
+            }
+            onPressEnter={() => confirm()}
+            style={{ width: 188, marginBottom: 8, display: "block" }}
+          />
+          <Space>
+            <Button
+              type="primary"
+              onClick={() => confirm()}
+              icon={<SearchOutlined />}
+              size="small"
+              style={{ width: 90 }}
+            >
+              Buscar
+            </Button>
+            <Button
+              onClick={() => clearFilters()}
+              size="small"
+              style={{ width: 90 }}
+            >
+              Reiniciar
+            </Button>
+          </Space>
+        </div>
+      ),
+      filterIcon: (filtered) => (
+        <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+      ),
+      onFilter: (value, record) =>
+        record.grupo.toLowerCase().includes(value.toLowerCase()),
     },
     {
       title: "Tipo",
@@ -195,20 +265,24 @@ export const Justificaciones = () => {
     },
   ];
 
-  // Condición para mostrar las columnas de editar y eliminar
   if (user.user.id_cargo !== 1 || user.user.id_grupo !== 1) {
+
+    if(user.user.id_cargo === 3 || user.user.id_cargo === 4 || user.user.id_cargo === 7 || user.user.id_cargo === 8){
+      columns.push(
+        {
+          title: "Editar",
+          width: 50,
+          render: (record) => (
+            <Button
+              className="acciones-button"
+              icon={<EditOutlined style={{ color: "green" }} />}
+              onClick={() => handleEditar(record.id)}
+            />
+          ),
+        }
+      );
+    }
     columns.push(
-      {
-        title: "Editar",
-        width: 50,
-        render: (record) => (
-          <Button
-            className="acciones-button"
-            icon={<EditOutlined style={{ color: "green" }} />}
-            onClick={() => handleEditar(record.id)}
-          />
-        ),
-      },
       {
         title: "Eliminar",
         width: 50,
@@ -258,6 +332,31 @@ export const Justificaciones = () => {
           bordered
         />
       </div>
+      <Modal
+        title="Editar Justificación"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        okText="Enviar"
+        cancelText="Cancelar"
+      >
+        <div>
+          <div style={{ marginBottom: 16 }}>
+            <span>Descuento:</span>
+            <Radio.Group onChange={(e) => setDescuento(e.target.value)} value={descuento}>
+              <Radio value="SI">SI</Radio>
+              <Radio value="NO">NO</Radio>
+            </Radio.Group>
+          </div>
+          <div>
+            <span>Penalidad:</span>
+            <Radio.Group onChange={(e) => setPenalidad(e.target.value)} value={penalidad}>
+              <Radio value="SI">SI</Radio>
+              <Radio value="NO">NO</Radio>
+            </Radio.Group>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

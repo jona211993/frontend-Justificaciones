@@ -1,0 +1,21 @@
+/* styles.css */
+.custom-calendar .ant-picker-cell-in-view {
+    height: 20px; /* Ajusta la altura de las celdas */
+    width: 20px;  /* Ajusta el ancho de las celdas si es necesario */
+    
+  }
+
+  .custom-calendar .ant-picker-calendar-date-content  {
+    max-height: 25px;         
+  }
+  
+  .custom-calendar .ant-picker-cell-inner {
+    display: flex;
+        
+  }
+  
+  .custom-calendar .ant-picker-calendar-date-value {
+    font-size: 12px; /* Ajusta el tamaño del texto si es necesario */
+    
+  }
+

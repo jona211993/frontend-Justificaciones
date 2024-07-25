@@ -56,10 +56,19 @@ export const MenuList = () => {
           <Link to="/expertisRH/justificaciones">Listar Justificaciones</Link>
         </Item>
       </SubMenu>
-      {user.user.id_cargo == 1 && (
-        <Item key="vacaciones" icon={<CalendarOutlined />}>
-          VACACIONES
-        </Item>
+      {user.user.id_cargo !== 5 && user.user.id_cargo !== 6  && (
+         <SubMenu
+         key="vacaciones"
+         icon={<CalendarOutlined/>}
+         title="VACACIONES"
+       >         
+           <Item key="crearSolicitud">
+             <Link to="/expertisRH/crearSolicitudVacaciones">Enviar Solicitud</Link>
+           </Item>
+           <Item key="listarMisSolicitudes">
+             <Link to="/expertisRH/misSolicitudes">Mis Solicitudes</Link>
+           </Item>
+       </SubMenu>
       )}
       <Item key="logout" icon={<LogoutOutlined />} onClick={handleLogout}>
         Cerrar Sesion
