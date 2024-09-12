@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link } from 'react-router-dom';
 import {
-  listarJustificacionesRequest,
+  // listarJustificacionesRequest,
   justificacionesByIdGrupoRequest,
   eliminarJustificacionRequest,
   editarJustificacionRequest
 } from "../../API/justificaciones.js";
-import { Table, Input, Button, Space, DatePicker, Modal, Radio } from "antd";
+import { Table, Input, Button, Space, Modal, Radio } from "antd";
 import {
   SearchOutlined,
   EditOutlined,
@@ -314,11 +314,13 @@ const Justificaciones = () => {
     title: "Cargar Pruebas",
     width: 50,
     render: (record) => (
+      <Link to="/expertisRH/cargaPruebas">
       <Button
         className="acciones-button"
         icon={<UploadOutlined style={{ color: "blue" }} />}
         onClick={() => handleCargarPruebas(record.id)}
       />
+      </Link>
     ),
   });}
 
