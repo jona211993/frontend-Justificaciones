@@ -19,6 +19,14 @@ export const AuthProvider = ({children}) => {
   const [autenticado, setAutenticado] = useState(false);
   const [errores, setErrores] = useState([]);
   const [idJust, setIdJust] = useState();
+  const [idSolVac, setIdSolVac] = useState();
+  const [filtrosJustificaciones, setFiltrosJustificaciones] = useState({
+    fechaInicio: null,
+    fechaFin: null,
+    asesor: '',
+    grupo: ''
+  });
+
 
 
   const signup = async (user) => {
@@ -63,8 +71,12 @@ export const AuthProvider = ({children}) => {
         errores,
         idJust,
         setIdJust,
+        idSolVac,
+        setIdSolVac,
         setErrores,
-        setAutenticado
+        setAutenticado,
+        filtrosJustificaciones,
+        setFiltrosJustificaciones
       }}
     >
       {children}

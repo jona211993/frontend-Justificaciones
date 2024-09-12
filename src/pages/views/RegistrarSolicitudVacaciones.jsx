@@ -1,7 +1,15 @@
-import React from 'react';
-import { Calendar } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Calendar, InputNumber, Modal, message } from 'antd';
 import { DatePicker, Form, Input, Button } from 'antd';
+import { useAuth } from "../../contexts/AuthContext.jsx";
+import axios from 'axios';
 import '../../styles/calendario.css'; // Asegúrate de importar el archivo CSS con las clases personalizadas
+import dayjs from 'dayjs';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+
+dayjs.extend(isSameOrAfter);
+dayjs.extend(isSameOrBefore);
 
 const { RangePicker } = DatePicker;
 const formItemLayout = {
@@ -24,43 +32,121 @@ const formItemLayout = {
 };
 
 export const RegistrarSolicitudVacaciones = () => {
+  const [blockedRanges, setBlockedRanges] = useState([]);
+  const { user } = useAuth();
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    const fetchBlockedDates = async () => {
+      try {
+        const idArea = user.user.idArea;
+        const response = await fetch(`http://localhost:3000/api/obtenerDiasOcupados/${idArea}`);
+        const data = await response.json();
+        const ranges = data.data.map(item => ({
+          start: dayjs(item.fecInicial).add(1, 'day'),
+          end: dayjs(item.fecFinal).add(1, 'day'), // Sumar un día al final del rango
+        }));
+
+          // Calcular los próximos 6 días (incluyendo hoy) como fechas bloqueadas
+          const today = dayjs();
+          console.log("hoy es : ",today)
+          const nextSevenDays = Array.from({ length: 7 }, (_, i) => ({
+            start: today.add(i, 'day'),
+            end: today.add(i, 'day'),
+          }));
+  
+          setBlockedRanges([...ranges, ...nextSevenDays]);
+      } catch (error) {
+        console.error('Error fetching blocked dates:', error);
+      }
+    };
+
+    fetchBlockedDates();
+  }, [user.user.idArea]);
+
+  const disabledDate = (current) => {
+    return blockedRanges.some(range => 
+      current.isSameOrAfter(range.start, 'day') && current.isSameOrBefore(range.end, 'day')
+    );
+  };
+
+  const dateCellRender = (current) => {
+    const isBlocked = blockedRanges.some(range =>
+      current.isSameOrAfter(range.start, 'day') && current.isSameOrBefore(range.end, 'day')
+    );
+    return (
+      <div className={isBlocked ? 'bg-red-500 text-red-500 rounded-3xl' : 'text-white'}>
+        {current.date()}
+      </div>
+    );
+  };
+
+  const handleFinish = async (values) => {
+    const datosFinales = {
+      ...values,
+      idArea: user.user.idArea,
+      idJefe: user.user.idJefe,
+      idEmpleado: user.user.idEmpleado,
+      usrInsert: user.user.usuario 
+    };
+    console.log('Valores del formulario:', datosFinales);
+    try {
+      const response = await axios.post('http://localhost:3000/api/registrarSolicitudVacaciones', datosFinales);
+      if (response.status === 200) {
+        message.success('Solicitud enviada correctamente');
+        Modal.success({
+          content: 'Solicitud enviada correctamente',
+          onOk: () => setTimeout(() => Modal.destroyAll(), 2000)
+        });
+      }
+    } catch (error) {
+      console.error('Error al enviar la solicitud:', error);
+      message.error('Error al enviar la solicitud');
+    }
+  };
+
   return (
-    <div className="bg-gray-400 h-screen overflow-scroll flex flex-col items-center gap-9">
-      <h1 className="mt-15 text-3xl">Formulario Solicitud</h1>
-      <div className="bg-cyan-400 flex gap-5 justify-center">
-        <div className="w-2/5  bg-green-400 rounded-lg shadow-lg p-4 flex items-center ">
-          <Calendar className="custom-calendar" />
+    <div className="h-screen overflow-scroll flex flex-col items-center gap-5">
+      <h1 className="mt-15 text-3xl font-bold font-roboto">Formulario Solicitud</h1>
+      <div className="flex gap-5 justify-center">
+        <div className="w-2/5 rounded-lg shadow-lg p-4 flex items-center">
+          <Calendar
+            className="custom-calendar"
+            disabledDate={disabledDate}
+            cellRender={dateCellRender}
+          />
         </div>
-        <div className="bg-yellow-300 pt-5">
+        <div className="pt-5">
           <Form
             {...formItemLayout}
+            form={form}
             variant="filled"
             style={{
-              maxWidth: 600,
+              minWidth: 500,
+              maxWidth: 650,
             }}
+            onFinish={handleFinish}
           >
-            
-         
             <Form.Item
               label="Elija los días"
-              name="dias elejidos"
+              name="diasElejidos"
               rules={[
                 {
                   required: true,
-                  message: "Please input!",
+                  message: 'Por favor este campo es requerido!',
                 },
               ]}
             >
-              <RangePicker />
+              <RangePicker disabledDate={disabledDate} />
             </Form.Item>
 
             <Form.Item
               label="Detalle"
-              name="Detalle"
+              name="detalle"
               rules={[
                 {
                   required: true,
-                  message: "Please input!",
+                  message: 'Por favor este campo es requerido!',
                 },
               ]}
             >

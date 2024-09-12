@@ -20,7 +20,7 @@ function InicioPage() {
         trigger={null}
       >
         <Logo></Logo>
-        <h1 className="pt-5 text-xl text-center">{user.user.usuario}</h1>
+        <h1 className="p-4 text-lg text-center">{user.user.usuario}</h1>
         <MenuList />
       </Sider>
       <Layout>
