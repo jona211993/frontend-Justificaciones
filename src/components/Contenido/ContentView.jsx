@@ -1,9 +1,9 @@
 
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { Home } from "../../pages/views/Home";
 import { Empleados } from "../../pages/views/Empleados";
 import Justificaciones  from "../../pages/views/Justificaciones";
-import {FormularioJustificacion} from "../../pages/FormularioJustificacion"
+import {FormularioJustificacion} from "../../pages/FormularioJustificacion";
 import { VerJustificacion } from "../../pages/views/VerJustificacion";
 import { CargaPruebas } from "../../pages/views/CargaPruebas";
 import { RegistrarSolicitudVacaciones } from "../../pages/views/RegistrarSolicitudVacaciones";

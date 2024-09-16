@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Table, Tag, Button, Space } from 'antd';
 import { EyeOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
@@ -8,7 +8,7 @@ import '../../styles/SolicitudesEquipo.css'; // Importa el archivo CSS para esti
 
 export const SolicitudesAprobadasGerencia = () => {
   const [enProceso, setEnProceso] = useState([]);
-  const { setIdSolVac, user } = useAuth();
+  const { setIdSolVac} = useAuth();
 
   const [filters, setFilters] = useState({});
   const [pagination, setPagination] = useState({ current: 1, pageSize: 5 });
@@ -18,13 +18,14 @@ export const SolicitudesAprobadasGerencia = () => {
       try {
         const pendientesResponse = await axios.get(`/obtenerSolicitudesAprobadasTodas`, { withCredentials: true });
         const pendientesData = pendientesResponse.data.data || [];
+        console.log(pendientesData);
         setEnProceso(pendientesData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
-    fetchSolicitudes();
+    fetchSolicitudes();    
   }, []);
 
   const handleVer = (id) => {
@@ -45,9 +46,9 @@ export const SolicitudesAprobadasGerencia = () => {
   const columns = [
     {
       title: 'Fecha de Solicitud',
-      dataIndex: 'fecSolicitud',
+      dataIndex: 'fecInsert',
       key: 'fecSolicitud',
-      render: (text) => <span>{text.slice(0, 10)}</span>,
+      render: (text) => <span>{text ? text.slice(0, 10): ''}</span>,
     },
     {
       title: 'Fecha de Inicio',
