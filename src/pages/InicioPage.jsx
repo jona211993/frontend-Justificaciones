@@ -1,8 +1,6 @@
-import { useState } from "react";
-import { Layout, Button } from "antd";
+import { Layout } from "antd";
 import { Logo } from "../components/sidebar/Logo";
 import { MenuList } from "../components/sidebar/MenuList";
-import { RightCircleOutlined , LeftCircleOutlined} from "@ant-design/icons";
 import { ContentView } from "../components/Contenido/ContentView";
 import { useAuth } from "../contexts/AuthContext";
 
