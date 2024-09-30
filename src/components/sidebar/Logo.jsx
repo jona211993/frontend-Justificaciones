@@ -1,4 +1,4 @@
-import {FireFilled} from '@ant-design/icons';
+// import {FireFilled} from '@ant-design/icons';
 export const Logo = () => {
   return (
     <div className='flex items-center justify-center p-3 mt-6'>

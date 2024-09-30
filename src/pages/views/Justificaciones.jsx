@@ -23,6 +23,7 @@ const Justificaciones = () => {
   const { setIdJust, user, filtrosJustificaciones, setFiltrosJustificaciones } = useAuth();
   const [justificaciones, setJustificaciones] = useState([]);
   const [filteredJustificaciones, setFilteredJustificaciones] = useState([]);
+  const [tipo2Filter, setTipo2Filter] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentJustificacion, setCurrentJustificacion] = useState(null);
   const [descuento, setDescuento] = useState("NO");
@@ -63,6 +64,14 @@ const Justificaciones = () => {
           justificacion.grupo.toLowerCase().includes(filtrosJustificaciones.grupo.toLowerCase())
         );
       }
+
+      if (tipo2Filter) {
+        filteredData = filteredData.filter(justificacion =>
+          justificacion.nivel3.toLowerCase().includes(tipo2Filter.toLowerCase())
+        );
+      }
+  
+    
 
       setFilteredJustificaciones(filteredData);
     };
@@ -267,6 +276,58 @@ const Justificaciones = () => {
       title: "Tipo",
       width: 150,
       dataIndex: "nivel1",
+    },
+    {
+      title: "Tipo2",
+      width: 150,
+      dataIndex: "nivel3",
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => (
+        <div style={{ padding: 8 }}>
+          <Input
+            placeholder="Buscar tipo"
+            value={selectedKeys[0]}
+            onChange={(e) => {
+              setTipo2Filter(e.target.value);
+              setFiltrosJustificaciones({ ...filtrosJustificaciones, nivel3: e.target.value });
+              setSelectedKeys(e.target.value ? [e.target.value] : []);
+            }}
+            onPressEnter={() => confirm()}
+            style={{ width: 188, marginBottom: 8, display: "block" }}
+          />
+          <Space>
+            <Button
+              type="primary"
+              onClick={() => confirm()}
+              icon={<SearchOutlined />}
+              size="small"
+              style={{ width: 90 }}
+            >
+              Buscar
+            </Button>
+            <Button
+              onClick={() => {
+                setTipo2Filter('');
+                setSelectedKeys([]);
+                clearFilters();
+              }}
+              size="small"
+              style={{ width: 90 }}
+            >
+              Reiniciar
+            </Button>
+          </Space>
+        </div>
+      ),
+      filterIcon: (filtered) => (
+        <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+      ),
+      onFilter: (value, record) =>
+        record.nivel3.toLowerCase().includes(value.toLowerCase()),
     },
     {
       title: "Ver",

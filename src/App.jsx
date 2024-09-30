@@ -22,8 +22,7 @@ function App() {
         <Route path="/registrar" element={<RegistroPage />} />
         <Route path="/formularioJustificacion" element={<FormularioJustificacion />}/>
         <Route path="/justificaciones" element={<Justificaciones/>} />
-        <Route path="/cargarPrueba" element={<CargaPruebas/>} />
-      </Route>
+        <Route path="/cargarPrueba" element={<CargaPruebas/>} />      </Route>
       <Route path="/vacaciones" element={<SelectBuscador/>} />
       
     </Routes>
