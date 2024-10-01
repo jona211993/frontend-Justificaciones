@@ -90,7 +90,7 @@ const Justificaciones = () => {
       if (response.status === 200) {
         obtenerJustificaciones();
       } else {
-        console.error("Error al eliminar la justificación:", response.statusText);
+        console.error("Error al eliminar la justificación     ", response.statusText);
       }
     } catch (error) {
       console.error("Hubo un error al eliminar la justificación:", error);
