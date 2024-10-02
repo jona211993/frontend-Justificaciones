@@ -6,8 +6,7 @@ import { asesoresBySuperRequest, grupoByIdRequest } from '../API/justificaciones
 import axios from "axios";
 import 'animate.css';
 import moment from 'moment';
-import { useForm } from "antd/lib/form/Form";
-import { Link ,  useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 
 
 const API= import.meta.env.VITE_BACKEND_URL
@@ -71,6 +70,8 @@ export const FormularioJustificacion = () => {
   const [fecha, setFecha] = useState(null);
   const [minutosPermiso, setMinutosPermiso] = useState(0);
   const navigate = useNavigate();
+  //Fecha para bloquear que suban justificaciones pasadas
+  const fechaLimite = moment('2024-10-01');
 
   const { TextArea } = Input;
  
@@ -197,6 +198,11 @@ export const FormularioJustificacion = () => {
     }
   };
 
+  // para bloquear fecha
+  const disabledDate = (current) => {
+    // No permitir seleccionar fechas anteriores a la fecha límite
+    return current && current < fechaLimite;
+  }
   return (
     <div className="h-full md:w-full animate__animated animate__fadeInDown ">
     <Form
@@ -242,6 +248,8 @@ export const FormularioJustificacion = () => {
                 onChange={handleFechaChange}
                 style={{ width: '100%' }}
                 value={fecha ? moment(fecha, "YYYY-MM-DD") : null}
+                disabledDate={disabledDate}
+                inputReadOnly={true}  // Deshabilitar entrada manual
               />
             </Form.Item>
           </div>
