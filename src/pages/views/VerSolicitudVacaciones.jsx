@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Descriptions, Spin, Tag, Button, Modal, Select, message } from 'antd';
 import axios from '../../API/axios.js';
 import { Col, Row, Statistic } from "antd";
@@ -220,9 +220,8 @@ export const VerSolicitudVacaciones = () => {
           placeholder="Selecciona un estado"
           style={{ width: '100%' }}
           onChange={value => setSelectedEstado(value)}
-        >
-          <Option value="PENDIENTE">PENDIENTE</Option>
-          <Option value="ADMITIDO">ADMITIDO</Option>
+        >          
+          <Option value="APROBADO">APROBADO</Option>
           <Option value="RECHAZADO">RECHAZADO</Option>
         </Select>
       </Modal>

@@ -99,7 +99,7 @@ export const MisSolicitudes = () => {
                     columns={columns}
                     dataSource={data}
                     pagination={{ pageSize: 50 }}
-                    scroll={{ y: 240 }}
+                    scroll={{ y: 360 }}
                 />
             </div>
         </div>

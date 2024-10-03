@@ -91,6 +91,7 @@ export const SolicitudesEquipo = () => {
             key: 'action',
             render: (text, record) => (
                 <Space size="middle">
+                    {record.idEmpleado !== user.user.idJefe && (
                     <Link to="/expertisRH/verSolicitudVacaciones">
                         <Button
                             type="primary"
@@ -100,6 +101,7 @@ export const SolicitudesEquipo = () => {
                             Ver
                         </Button>
                     </Link>
+                )}
                 </Space>
             ),
         },
