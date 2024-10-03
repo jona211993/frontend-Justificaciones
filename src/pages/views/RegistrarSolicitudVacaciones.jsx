@@ -50,7 +50,7 @@ export const RegistrarSolicitudVacaciones = () => {
           // Calcular los próximos 6 días (incluyendo hoy) como fechas bloqueadas
           const today = dayjs();
           console.log("hoy es : ",today)
-          const nextSevenDays = Array.from({ length: 2 }, (_, i) => ({
+          const nextSevenDays = Array.from({ length: 7}, (_, i) => ({
             start: today.add(i, 'day'),
             end: today.add(i, 'day'),
           }));
