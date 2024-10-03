@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Calendar, InputNumber, Modal, message } from 'antd';
+import  { useState, useEffect } from 'react';
+import { Calendar, Modal, message } from 'antd';
 import { DatePicker, Form, Input, Button } from 'antd';
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import axios from 'axios';
@@ -40,7 +40,7 @@ export const RegistrarSolicitudVacaciones = () => {
     const fetchBlockedDates = async () => {
       try {
         const idArea = user.user.idArea;
-        const response = await fetch(`http://localhost:3000/api/obtenerDiasOcupados/${idArea}`);
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/obtenerDiasOcupados/${idArea}`);
         const data = await response.json();
         const ranges = data.data.map(item => ({
           start: dayjs(item.fecInicial).add(1, 'day'),
@@ -91,7 +91,7 @@ export const RegistrarSolicitudVacaciones = () => {
     };
     console.log('Valores del formulario:', datosFinales);
     try {
-      const response = await axios.post('http://localhost:3000/api/registrarSolicitudVacaciones', datosFinales);
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/registrarSolicitudVacaciones`, datosFinales);
       if (response.status === 200) {
         message.success('Solicitud enviada correctamente');
         Modal.success({
