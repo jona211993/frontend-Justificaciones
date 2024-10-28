@@ -71,7 +71,7 @@ export const FormularioJustificacion = () => {
   const [minutosPermiso, setMinutosPermiso] = useState(0);
   const navigate = useNavigate();
   //Fecha para bloquear que suban justificaciones pasadas
-  const fechaLimite = moment('2024-10-10');
+  const fechaLimite = moment('2024-10-26');
 
   const { TextArea } = Input;
  
