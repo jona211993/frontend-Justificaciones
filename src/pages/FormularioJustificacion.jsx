@@ -71,7 +71,7 @@ export const FormularioJustificacion = () => {
   const [minutosPermiso, setMinutosPermiso] = useState(0);
   const navigate = useNavigate();
   //Fecha para bloquear que suban justificaciones pasadas
-  const fechaLimite = moment('2024-10-01');
+  const fechaLimite = moment('2024-10-25');
 
   const { TextArea } = Input;
  
@@ -81,7 +81,7 @@ export const FormularioJustificacion = () => {
       const response = await grupoByIdRequest(user.user.id_grupo);
       setGrupo(response.data[0].nombre);
     } catch (error) {
-      console.error('Hubo un error al obtener grupo', error);
+      console.error('Hubo un error al obt ener grupo', error);
     }
   };
 
