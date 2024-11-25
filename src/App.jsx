@@ -16,7 +16,7 @@ function App() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
-      //rutas protejidas
+     
       <Route element={<ProtectecRoute/>}>
         <Route path="/expertisRH/*" element={<InicioPage />} />
         <Route path="/registrar" element={<RegistroPage />} />
