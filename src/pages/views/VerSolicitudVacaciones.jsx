@@ -102,7 +102,7 @@ export const VerSolicitudVacaciones = () => {
   };
 
   const handleConfirm = async () => {
-    try {
+    
       const response = await axios.put(
         "/cambiarEstadoSolicitudVacaciones",
         {
@@ -111,20 +111,8 @@ export const VerSolicitudVacaciones = () => {
         },
         { withCredentials: true }
       );
-      console.log(response);
-      console.log("el estado enviado es= ", selectedEstado);
-      if (response) {
-        message.success("Estado actualizado correctamente");
-        setSolicitud({ ...solicitud, estado: selectedEstado });
-        setIsModalVisible(false);
-      } else {
-        message.error({ content: "Hubo un error al actualizar el estado" });
-        setIsModalVisible(false);
-      }
-    } catch (error) {
-      message.error({ content: "Hubo un error al actualizar el estado" });
-      setIsModalVisible(false);
-    }
+      console.log("ME LLEGA DEL RESPONSE: ",response);
+     
   };
 
   const handleConfirm2 = async () => {
