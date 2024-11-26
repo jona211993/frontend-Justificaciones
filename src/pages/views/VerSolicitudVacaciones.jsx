@@ -74,8 +74,6 @@ export const VerSolicitudVacaciones = () => {
       color = "blue";
     } else if (estado === "APROBADO") {
       color = "green";
-    } else if (estado === "ADMITIDO") {
-      color = "yellow";
     } else {
       color = "red";
     }
@@ -87,9 +85,12 @@ export const VerSolicitudVacaciones = () => {
   };
 
   const handleClick = () => {
+    // Para cuando apruebe cesar
     if (user.user.id_cargo === 9) {
       setIsModalVisible2(true);
-    } else {
+    } 
+    // PAra cuando apruebe un jefe
+    else {
       setIsModalVisible(true);
     }
   };
@@ -103,6 +104,7 @@ export const VerSolicitudVacaciones = () => {
 
   const handleConfirm = async () => {
     
+    try {
       const response = await axios.put(
         "/cambiarEstadoSolicitudVacaciones",
         {
@@ -111,7 +113,12 @@ export const VerSolicitudVacaciones = () => {
         },
         { withCredentials: true }
       );
-      console.log("ME LLEGA DEL RESPONSE: ",response);
+      console.log("Respuesta recibida:", response);
+      setIsModalVisible(false)
+    } catch (error) {
+      console.error("Error al cambiar el estado de la solicitud de vacaciones:", error);
+      alert("Ocurrió un error al cambiar el estado. Inténtalo de nuevo.");
+    }
      
   };
 
