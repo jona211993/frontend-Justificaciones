@@ -50,12 +50,15 @@ export const RegistrarSolicitudVacaciones = () => {
           // Calcular los próximos 6 días (incluyendo hoy) como fechas bloqueadas
           const today = dayjs();
           console.log("hoy es : ",today)
+          
+
           const nextSevenDays = Array.from({ length: 7}, (_, i) => ({
             start: today.add(i, 'day'),
             end: today.add(i, 'day'),
           }));
   
           setBlockedRanges([...ranges, ...nextSevenDays]);
+
       } catch (error) {
         console.error('Error fetching blocked dates:', error);
       }
@@ -65,8 +68,17 @@ export const RegistrarSolicitudVacaciones = () => {
   }, [user.user.idArea]);
 
   const disabledDate = (current) => {
+
+     const today = dayjs();
+  const startOfMonth = today.startOf("day");
+
+
+    // Deshabilitar fechas fuera del rango permitido (antes del mes actual o después del año actual)
+    if (current.isBefore(startOfMonth, 'day') ) {
+      return true;
+    }
     return blockedRanges.some(range => 
-      current.isSameOrAfter(range.start, 'day') && current.isSameOrBefore(range.end, 'day')
+      current.isSameOrAfter(range.start, 'day') && current.isSameOrBefore(range.end, 'day') 
     );
   };
 
@@ -114,6 +126,7 @@ export const RegistrarSolicitudVacaciones = () => {
             className="custom-calendar"
             disabledDate={disabledDate}
             cellRender={dateCellRender}
+            
           />
         </div>
         <div className="pt-5">

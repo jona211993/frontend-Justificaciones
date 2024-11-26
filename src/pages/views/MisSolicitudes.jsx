@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { listarMisSolicitudesRequest } from "../../API/vacaciones.js";
-import { Table, Tag } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
+import { Table, Tag, Button, Space } from 'antd';
+import { Link } from 'react-router-dom';
 import "../../styles/tabla.css";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 
 export const MisSolicitudes = () => {
     const [solicitudes, setSolicitudes] = useState([]);
-    const { user } = useAuth();
+    const { user,setIdSolVac } = useAuth();
 
     useEffect(() => {
         const obtenerSolicitudes = async () => {
@@ -28,6 +30,11 @@ export const MisSolicitudes = () => {
         ...solicitud,
         key: index,
     }));
+
+    const handleVer = (id) => {
+        console.log("El id enviado es: " + id);
+        setIdSolVac(id);
+    };
 
     const columns = [
         {
@@ -66,14 +73,12 @@ export const MisSolicitudes = () => {
         {
             title: 'Estado',
             dataIndex: 'estadoVacaciones',
-            width: 150,
+            width: 70,
             render: (text, record) => {
                 const estado = record.estadoVacaciones || record.estado;
                 let color;
 
-                if (estado === "ADMITIDO") {
-                    color = 'yellow';
-                } else if (estado === "PENDIENTE") {
+              if (estado === "PENDIENTE") {
                     color = 'blue';
                 } else if (estado === "APROBADO") {
                   color = 'green';
@@ -88,6 +93,26 @@ export const MisSolicitudes = () => {
                 );
             },
         },
+        { title: 'Acción',
+            key: 'action',
+            width: 100,
+            render: (text, record) => (
+                <Space size="middle">                   
+                {record.estado === "PENDIENTE" && (
+                    <Link to="/expertisRH/verSolicitudVacaciones">
+                        <Button
+                           type="primary" danger
+                            icon={<DeleteOutlined />}
+                            onClick={() => handleVer(record.id)}
+                        >
+                          Eliminar
+                        </Button>
+                        
+                    </Link>
+                )}
+                </Space>
+                
+            ),}
     ];
 
     return (

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Table, Tag, Button, Space } from 'antd';
-import { EyeOutlined } from '@ant-design/icons';
+import { EyeOutlined,DeleteOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import axios from '../../API/axios';
@@ -100,9 +100,23 @@ export const SolicitudesEquipo = () => {
                         >
                             Ver
                         </Button>
+                        
+                    </Link>
+                )}
+                {record.estado === "PENDIENTE" && (
+                    <Link to="/expertisRH/verSolicitudVacaciones">
+                        <Button
+                           type="primary" danger
+                            icon={<DeleteOutlined />}
+                            onClick={() => handleVer(record.id)}
+                        >
+                          Eliminar
+                        </Button>
+                        
                     </Link>
                 )}
                 </Space>
+                
             ),
         },
     ];
