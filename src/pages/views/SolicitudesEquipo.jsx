@@ -103,7 +103,7 @@ export const SolicitudesEquipo = () => {
                         
                     </Link>
                 )}
-                {record.estado === "PENDIENTE" && (
+                {/* {record.estado === "PENDIENTE" && (
                     <Link to="/expertisRH/verSolicitudVacaciones">
                         <Button
                            type="primary" danger
@@ -114,7 +114,7 @@ export const SolicitudesEquipo = () => {
                         </Button>
                         
                     </Link>
-                )}
+                )} */}
                 </Space>
                 
             ),
