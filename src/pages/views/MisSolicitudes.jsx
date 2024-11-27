@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
 import { listarMisSolicitudesRequest } from "../../API/vacaciones.js";
 import { DeleteOutlined } from '@ant-design/icons';
-import { Table, Tag, Button, Space } from 'antd';
-import { Link } from 'react-router-dom';
+import { Table, Tag, Button, Space, Modal, message } from 'antd';
 import "../../styles/tabla.css";
 import { useAuth } from "../../contexts/AuthContext.jsx";
+import axios from "../../API/axios.js";
 
 export const MisSolicitudes = () => {
     const [solicitudes, setSolicitudes] = useState([]);
-    const { user,setIdSolVac } = useAuth();
+    const { user } = useAuth();
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [idToDelete, setIdToDelete] = useState(null); // Almacena el ID de la solicitud a eliminar
 
     useEffect(() => {
         const obtenerSolicitudes = async () => {
@@ -31,9 +33,37 @@ export const MisSolicitudes = () => {
         key: index,
     }));
 
-    const handleVer = (id) => {
-        console.log("El id enviado es: " + id);
-        setIdSolVac(id);
+    const showDeleteModal = (id) => {
+        setIdToDelete(id);
+        setIsModalVisible(true);
+    };
+
+    const handleDelete = async () => {
+        try {
+            // Llamada a la API con axios
+            const response = await axios.delete('/eliminarSolicitudVacacionesPendiente', {
+                data: { id: idToDelete }, // Envía el ID en el cuerpo
+            });
+             console.log(response)
+            if (response.status === 200) {
+                message.success("Solicitud eliminada exitosamente");
+                setSolicitudes(prev => prev.filter(solicitud => solicitud.id !== idToDelete)); // Actualiza la lista local
+            } else {
+                // Si el estado no es 200, muestra un mensaje de error
+                message.error(response.data?.message || "No se pudo eliminar la solicitud. Intente nuevamente.");
+            }
+        } catch (error) {
+            console.error("Error al eliminar la solicitud", error);
+            message.error(error.response?.data?.message || "Ocurrió un error al intentar eliminar la solicitud.");
+        } finally {
+            setIsModalVisible(false);
+            setIdToDelete(null);
+        }
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+        setIdToDelete(null);
     };
 
     const columns = [
@@ -78,11 +108,11 @@ export const MisSolicitudes = () => {
                 const estado = record.estadoVacaciones || record.estado;
                 let color;
 
-              if (estado === "PENDIENTE") {
+                if (estado === "PENDIENTE") {
                     color = 'blue';
                 } else if (estado === "APROBADO") {
-                  color = 'green';
-              } else {
+                    color = 'green';
+                } else {
                     color = 'red';
                 }
 
@@ -93,26 +123,25 @@ export const MisSolicitudes = () => {
                 );
             },
         },
-        { title: 'Acción',
+        {
+            title: 'Acción',
             key: 'action',
             width: 100,
             render: (text, record) => (
-                <Space size="middle">                   
-                {record.estado === "PENDIENTE" && (
-                    <Link to="/expertisRH/verSolicitudVacaciones">
+                <Space size="middle">
+                    {record.estado === "PENDIENTE" && (
                         <Button
-                           type="primary" danger
+                            type="primary"
+                            danger
                             icon={<DeleteOutlined />}
-                            onClick={() => handleVer(record.id)}
+                            onClick={() => showDeleteModal(record.id)}
                         >
-                          Eliminar
+                            Eliminar
                         </Button>
-                        
-                    </Link>
-                )}
+                    )}
                 </Space>
-                
-            ),}
+            ),
+        },
     ];
 
     return (
@@ -127,6 +156,16 @@ export const MisSolicitudes = () => {
                     scroll={{ y: 360 }}
                 />
             </div>
+            <Modal
+                title="Confirmación"
+                visible={isModalVisible}
+                onOk={handleDelete}
+                onCancel={handleCancel}
+                okText="Confirmar"
+                cancelText="Cancelar"
+            >
+                <p>¿Está seguro de que desea eliminar esta solicitud?</p>
+            </Modal>
         </div>
     );
 };
