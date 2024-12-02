@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Table, Tag, Button, Space } from 'antd';
-import { EyeOutlined,DeleteOutlined } from '@ant-design/icons';
+import { EyeOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import axios from '../../API/axios';

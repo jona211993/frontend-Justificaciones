@@ -16,7 +16,7 @@ const provinceData = ["FALTA", "TARDANZA", "PERMISO"];
 const cityData = {
   FALTA: ["FALTA_JUSTIFICADA", "FALTA_INJUSTIFICADA"],
   TARDANZA: ["TARDANZA_JUSTIFICADA"],
-  PERMISO: ["PERMISO_JUSTIFICADO"],
+  PERMISO: ["PERMISO_JUSTIFICADO, PERMISO_INJUSTIFICADO"],
 };
 const nivel3Data = {
   FALTA_JUSTIFICADA: [
@@ -53,6 +53,11 @@ const nivel3Data = {
     "Colaborador se retira antes de tiempo porque decidió renunciar",
     "Tiene tres a + motivos de permiso",
     "Colaborador tiene una emergencia medica o familiar ",
+  ],
+
+  PERMISO_INJUSTIFICADO: [ 
+    "OTRO- colocar el motivo en observación "
+  
   ],
 };
 
