@@ -52,7 +52,7 @@ export const RegistrarSolicitudVacaciones = () => {
           console.log("hoy es : ",today)
           
 
-          const nextSevenDays = Array.from({ length: 7}, (_, i) => ({
+          const nextSevenDays = Array.from({ length: 1}, (_, i) => ({
             start: today.add(i, 'day'),
             end: today.add(i, 'day'),
           }));

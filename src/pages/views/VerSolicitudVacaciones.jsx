@@ -3,6 +3,9 @@ import { Descriptions, Spin, Tag, Button, Modal, Select, message } from "antd";
 import axios from "../../API/axios.js";
 import { Col, Row, Statistic } from "antd";
 import { useAuth } from "../../contexts/AuthContext";
+// import { data } from "autoprefixer";
+
+import dayjs from 'dayjs';
 
 const { Option } = Select;
 
@@ -46,10 +49,11 @@ export const VerSolicitudVacaciones = () => {
           const response = await axios.get("/obtenerSaldoVacacionesEmpleado", {
             params: {
               idEmpleado: solicitud.idEmpleado,
-              fecMes: solicitud.codMes,
+              fecMes: dayjs(solicitud.fecFinal).subtract(1, 'month').startOf('month').format('YYYY-MM-DD')
             },
             withCredentials: true,
           });
+          console.log("---",response.data.data[0])
 
           console.log("llego de data: ", response.data.data[0].saldoVacaciones);
 
