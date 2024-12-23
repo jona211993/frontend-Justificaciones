@@ -16,6 +16,7 @@ function InicioPage() {
          collapsible
         className="text-white"
         trigger={null}
+        width={250}
       >
         <Logo></Logo>
         <h1 className="p-4 text-lg text-center">{user.user.usuario}</h1>

@@ -41,6 +41,27 @@ export const asesoresBySuperRequest = (grupo) => {
       });
   };
 
+  // Para obtener el idEmpleado:
+  export const idEmpleadoByAlias = (asesor) => {
+    // Define los datos que deseas enviar en el cuerpo
+    const data = {
+      asesor: asesor
+    };
+  
+    // Realiza la petición POST con Axios
+    return axios.post('/obtenerIdEmpleadoPorAlias', data)
+      .then(response => {
+        // Maneja la respuesta aquí
+        console.log(response.data);
+        return response.data; // Si necesitas devolver los datos
+      })
+      .catch(error => {
+        // Maneja los errores aquí
+        console.error('Hubo un error:', error);
+        throw error; // Si necesitas propagar el error
+      });
+  };
+
   //? Para las justificaciones
   export const justificacionesByIdGrupoRequest = (grupo, cargo) => {
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import 'animate.css';
 export const Home = () => {
   return (

@@ -37,32 +37,33 @@ export const MenuList = () => {
             <Link to="/expertisRH/empleados">EMPLEADOS</Link>
           </Item>
         )}
-        {(user.user.id_cargo != 9 && (user.user.id_cargo === 5 ||
-              user.user.id_cargo === 7 ||
-              user.user.id_cargo === 8 ||
-              user.user.id_cargo === 1||
-              user.user.id_cargo === 3 ||
-              user.user.id_cargo === 4)) && (
-          <SubMenu
-            key="justificaciones"
-            icon={<AuditOutlined />}
-            title="JUSTIFICACIONES"
-          >
-            {(user.user.id_cargo === 5 ||
-              user.user.id_cargo === 7 ||
-              user.user.id_cargo === 8) && (
-              <Item key="crearJust">
-                <Link to="/expertisRH/crearJust">Nueva Justificacion</Link>
-              </Item>
-            )}
+        {user.user.id_cargo != 9 &&
+          (user.user.id_cargo === 5 ||
+            user.user.id_cargo === 7 ||
+            user.user.id_cargo === 8 ||
+            user.user.id_cargo === 1 ||
+            user.user.id_cargo === 3 ||
+            user.user.id_cargo === 4) && (
+            <SubMenu
+              key="justificaciones"
+              icon={<AuditOutlined />}
+              title="JUSTIFICACIONES"
+            >
+              {(user.user.id_cargo === 5 ||
+                user.user.id_cargo === 7 ||
+                user.user.id_cargo === 8) && (
+                <Item key="crearJust">
+                  <Link to="/expertisRH/crearJust">Nueva Justificacion</Link>
+                </Item>
+              )}
 
-            <Item key="listarJust">
-              <Link to="/expertisRH/justificaciones">
-                Listar Justificaciones
-              </Link>
-            </Item>
-          </SubMenu>
-        )}
+              <Item key="listarJust">
+                <Link to="/expertisRH/justificaciones">
+                  Listar Justificaciones
+                </Link>
+              </Item>
+            </SubMenu>
+          )}
 
         {user.user.id_cargo !== 6 && (
           <SubMenu
@@ -82,6 +83,22 @@ export const MenuList = () => {
                 <Link to="/expertisRH/listarSolicitudes">Mis Solicitudes</Link>
               </Item>
             )}
+            {/*MODULO PARA SUPERVISOR*/}
+            {user.user.id_cargo === 5 && (
+              <Item key="registroVacacionesAsesor">
+                <Link to="/expertisRH/registrarVacacionesAsesor">
+                  Registrar Vacaciones Asesor
+                </Link>
+              </Item>
+            )}
+             {/*MODULO PARA SUPERVISOR*/}
+            {user.user.id_cargo === 5 && (
+              <Item key="ListarSolicitudesAsesores">
+                <Link to="/expertisRH/listarSolicitudesAsesores">
+                  Solicitudes Asesores
+                </Link>
+              </Item>
+            )}
 
             {((user.user.idEmpleado === user.user.idJefe &&
               user.user.id_cargo != 9) ||
@@ -92,7 +109,7 @@ export const MenuList = () => {
                 </Link>
               </Item>
             )}
-            {(user.user.id_cargo === 9 || user.user.idEmpleado===179   )&& (
+            {(user.user.id_cargo === 9 || user.user.idEmpleado === 179) && (
               <Item key="solicitudesAprobadasGerencia">
                 <Link to="/expertisRH/solicitudesAprobadasGerencia">
                   Solicitudes Aprobadas
@@ -108,15 +125,12 @@ export const MenuList = () => {
             )}
             {user.user.id_cargo === 9 && (
               <Item key="Calendario Jefes">
-                <Link to="/expertisRH/Calendario">
-                  Calendario Jefes Area
-                </Link>
+                <Link to="/expertisRH/Calendario">Calendario Jefes Area</Link>
               </Item>
             )}
           </SubMenu>
         )}
 
-        
         <Item key="logout" icon={<LogoutOutlined />} onClick={handleLogout}>
           Cerrar Sesion
         </Item>
