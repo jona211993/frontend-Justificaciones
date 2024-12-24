@@ -78,7 +78,7 @@ export const Empleados = () => {
 
   return (
     <div className=' h-screen flex justify-center items-center flex-col m-5'>
-      <h1 className='mt-5 text-cyan-950 text-3xl'>Empleados Staff</h1>
+      <h1 className='mt-5 text-cyan-950 text-3xl'>Lista Empleados Expertis</h1>
       <div className='w-3/5 mt-10 max-h-screen'>
         <Table
           className="custom-table"

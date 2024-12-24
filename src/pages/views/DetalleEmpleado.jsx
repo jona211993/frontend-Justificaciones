@@ -77,8 +77,10 @@ const DetalleEmpleado = () => {
       }, [empleadosStaff, idEmpleado]);
     
   return (
-    <div className="bg-purple-400 w-full h-full">
-      <div className="w-full bg-yellow-200 flex items-center justify-center">ID del empleado: {idEmpleado}</div>
+    <div className=" w-full h-full">
+    <div className="w-full text-xl font-bold bg-blue-950 text-white pt-2 pb-2 flex items-center justify-center">
+  {empleadoElegido ? empleadoElegido.nombreCompleto : <>Cargando</>}
+</div>
       <div className="flex w-full justify-between pl-10 pr-10 mt-5 ">
         <Row gutter={16}>
           <Col span={12}>
@@ -121,8 +123,8 @@ const DetalleEmpleado = () => {
         <label className="font-bold text-xl pl-5"> Datos del Empleado</label>
        
       </div>
-     <div className=" flex bg-slate-500 items-center justify-center gap-20">
-     <div className=" w-1/2 mt-5 bg-red-300 pt-4 pb-4">
+     <div className=" flex  items-center justify-center gap-20">
+     <div className=" w-1/2 mt-5  pt-4 pb-4">
        
        {empleadoElegido ? (
          <div className="pl-16 mt-3 flex  flex-col gap-2">
@@ -145,7 +147,7 @@ const DetalleEmpleado = () => {
        )}
      </div> 
      <div className=" w-1/2 mt-5  pt-4 pb-4 flex justify-center">
-     <div className="w-64 h-64  flex items-center justify-center">
+     <div className="w-72 h-72 bg-gray-400 flex items-center justify-center">
       <img
         src="https://cdn-icons-png.flaticon.com/512/6522/6522581.png"
         alt="Ejemplo"

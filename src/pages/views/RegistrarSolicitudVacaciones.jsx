@@ -52,12 +52,12 @@ export const RegistrarSolicitudVacaciones = () => {
           console.log("hoy es : ",today)
           
 
-          const nextSevenDays = Array.from({ length: 1}, (_, i) => ({
-            start: today.add(i, 'day'),
-            end: today.add(i, 'day'),
-          }));
-  
-          setBlockedRanges([...ranges, ...nextSevenDays]);
+          // const nextSevenDays = Array.from({ length: 1}, (_, i) => ({
+          //   start: today.add(i, 'day'),
+          //   end: today.add(i, 'day'),
+          // }));
+          // , ...nextSevenDays
+          setBlockedRanges([...ranges]);
 
       } catch (error) {
         console.error('Error fetching blocked dates:', error);
@@ -70,7 +70,7 @@ export const RegistrarSolicitudVacaciones = () => {
   const disabledDate = (current) => {
 
      const today = dayjs();
-  const startOfMonth = today.startOf("day");
+     const startOfMonth = today.startOf("day");
 
 
     // Deshabilitar fechas fuera del rango permitido (antes del mes actual o después del año actual)
@@ -124,7 +124,7 @@ export const RegistrarSolicitudVacaciones = () => {
         <div className="w-2/5 rounded-lg shadow-lg p-4 flex items-center">
           <Calendar
             className="custom-calendar"
-            disabledDate={disabledDate}
+            // disabledDate={disabledDate}
             cellRender={dateCellRender}
             
           />
@@ -150,7 +150,8 @@ export const RegistrarSolicitudVacaciones = () => {
                 },
               ]}
             >
-              <RangePicker disabledDate={disabledDate} />
+              {/* disabledDate={disabledDate} */}
+              <RangePicker  />
             </Form.Item>
 
             <Form.Item

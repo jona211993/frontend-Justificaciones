@@ -18,6 +18,7 @@ import { CalendarioJefes } from "../../pages/views/CalendarioJefes";
 import FormularioVacacionesAsesor from "../../pages/views/FormularioVacacionesAsesor";
 import SolicitudesAsesores from "../../pages/views/SolicitudesAsesores";
 import DetalleEmpleado from "../../pages/views/DetalleEmpleado";
+import EmpleadosAlertaVacaciones from "../../pages/views/EmpleadosAlertaVacaciones";
  
 export const ContentView = () => {
   return (
@@ -42,6 +43,7 @@ export const ContentView = () => {
         <Route path="/registrarVacacionesAsesor" element={<FormularioVacacionesAsesor/>} ></Route>
         <Route path="/listarSolicitudesAsesores" element={<SolicitudesAsesores/>} ></Route>
         <Route path="/detalleEmpleado/:idEmpleado" element={<DetalleEmpleado/>} ></Route>
+        <Route path="/empleadosAlertaVacaciones" element={<EmpleadosAlertaVacaciones/>} ></Route>
         </Routes>
     </div>
   );

@@ -35,7 +35,12 @@ export const MenuList = () => {
         {user.user.id_cargo == 1 && (
           <Item key="empleados" icon={<TeamOutlined />}>
             <Link to="/expertisRH/empleados">EMPLEADOS</Link>
-          </Item>
+          </Item>          
+        )}
+         {user.user.id_cargo == 1 && (
+          <Item key="empleadosAlertaVacaciones" icon={<TeamOutlined />}>
+            <Link to="/expertisRH/empleadosAlertaVacaciones">ALERTA VACACIONES</Link>
+          </Item>          
         )}
         {user.user.id_cargo != 9 &&
           (user.user.id_cargo === 5 ||
