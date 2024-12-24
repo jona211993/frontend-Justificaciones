@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { listarEmpleadosStaffRequest } from "../../API/empleadosStaff.js";
-import { Table } from 'antd';
+import { Table , Button} from 'antd';
+import { Link } from 'react-router-dom';
 import { FilterOutlined } from '@ant-design/icons';
+import { SolutionOutlined} from "@ant-design/icons";
 import "../../styles/tabla.css";
 
 export const Empleados = () => {
@@ -26,10 +28,17 @@ export const Empleados = () => {
   }));
 
   // Obtener las opciones únicas para el filtro de "Área"
-  const areaOptions = [...new Set(empleadosStaff.map(empleado => empleado.area))].map(area => ({
+  const areaOptions = [...new Set(empleadosStaff.map(empleado => empleado.nombreArea))].map(area => ({
     text: area,
     value: area,
   }));
+
+
+  const handleVer = (record) => {
+    console.log('Detalles del empleado:', record);
+    // Por ejemplo, redirigir a otra página
+    // navigate(`/empleados/${record.id}`);
+  };
 
   const columns = [
     {
@@ -42,13 +51,28 @@ export const Empleados = () => {
       dataIndex: 'nombreArea', // Asegúrate de que 'area' sea la propiedad correcta en tus datos
       width: 150,
       filters: areaOptions,
-      onFilter: (value, record) => record.area.includes(value),
+      onFilter: (value, record) => record.nombreArea === value,
       filterIcon: (filtered) => <FilterOutlined style={{ color: filtered ? '#FF0000' : '#FFFFFF' }} />,
     },
     {
       title: 'Cargo',
       dataIndex: 'CARGO', // Asegúrate de que 'cargo' sea la propiedad correcta en tus datos
       width: 150,
+    },
+    {
+      title: 'Acciones',
+      key: 'acciones', // Define un identificador único para esta columna
+      width: 150,
+      
+      render: (record) => (
+        <Link to={`/expertisRH/detalleEmpleado/${record.idEmpleado[0]}`}>
+          <Button
+            className="acciones-button  "
+            icon={<SolutionOutlined  style={{ color: "green" }} />}
+            onClick={() => handleVer(record.idEmpleado)}
+          />
+        </Link>
+      ),
     },
   ];
 

@@ -18,6 +18,9 @@ export const VerSolicitudVacaciones = () => {
   const [isModalVisible2, setIsModalVisible2] = useState(false);
   const [selectedEstado2, setSelectedEstado2] = useState("");
   const [saldoVacaciones, setSaldoVacaciones] = useState(null); // Estado para almacenar el saldo de vacaciones
+  const [vacacionestruncas, setVacacionesTruncas] = useState(null);
+  const [vacacionesPendientes, setVacacionesPendientes] = useState(null);
+  const [vacacionesVencidas, setVacacionesVencidas] = useState(null);
 
   useEffect(() => {
     const fetchSolicitud = async () => {
@@ -40,33 +43,76 @@ export const VerSolicitudVacaciones = () => {
 
   // Nuevo useEffect que se ejecuta cuando `solicitud` ha sido cargada
   useEffect(() => {
-    if (solicitud != null) {
-      const fetchSaldoVacaciones = async () => {
+    if (solicitud != null) {      
+
+      const fetchInfoVacaciones = async () => {
         try {
           console.log("mi solicitud es: ", solicitud);
           console.log("idemp:", solicitud.idEmpleado);
-          console.log("codMes:", solicitud.codMes);
-          const response = await axios.get("/obtenerSaldoVacacionesEmpleado", {
-            params: {
-              idEmpleado: solicitud.idEmpleado,
-              fecMes: dayjs(solicitud.fecFinal).subtract(1, 'month').startOf('month').format('YYYY-MM-DD')
+          console.log("codMes:", solicitud.fecFinal);
+          const MesEnviar = dayjs(solicitud.fecFinal).subtract(1, 'month').startOf('month').format('YYYY-MM-DD')
+          console.log("**** , ", MesEnviar)
+          const response = await axios.post(
+            "/obtenerInfoVacaciones", // URL de la API
+            {
+              idEmpleado: solicitud.idEmpleado, // Datos en el cuerpo de la solicitud
+              fecMes: MesEnviar,
             },
-            withCredentials: true,
-          });
-          console.log("---",response.data.data[0])
+            {
+              withCredentials: true, // Opción para incluir credenciales
+            }
+          );
+          console.log("---",response.data.data)
 
-          console.log("llego de data: ", response.data.data[0].saldoVacaciones);
-
-          setSaldoVacaciones(response.data.data[0].saldoVacaciones); // Almacena el saldo de vacaciones
-          console.log("saldo Vacaciones ", saldoVacaciones);
+          console.log("llego de data: ", response.data.data[0]);
+          setSaldoVacaciones(response.data.data[0].Truncas+response.data.data[0].Pendientes+response.data.data[0].Vencidas)
+          setVacacionesTruncas(response.data.data[0].Truncas)
+          setVacacionesPendientes(response.data.data[0].Pendientes)
+          setVacacionesVencidas(response.data.data[0].Vencidas)
+          
         } catch (error) {
-          console.error("Error fetching saldo:", error);
+          console.error("Error fetching info vacaciones:", error);
         }
       };
-
-      fetchSaldoVacaciones(); // Llama a la función para obtener el saldo
+      
+      fetchInfoVacaciones();
+    
     }
   }, [solicitud]);
+
+  // useEffect(() => {
+  //   if (solicitud != null) {
+  //     const fetchSaldoVacaciones = async () => {
+  //       try {
+  //         console.log("mi solicitud es: ", solicitud);
+  //         console.log("idemp:", solicitud.idEmpleado);
+  //         console.log("codMes:", solicitud.codMes);
+  //         const response = await axios.get("/obtenerSaldoVacacionesEmpleado", {
+  //           params: {
+  //             idEmpleado: solicitud.idEmpleado,
+  //             fecMes: dayjs(solicitud.fecFinal).subtract(1, 'month').startOf('month').format('YYYY-MM-DD')
+  //           },
+  //           withCredentials: true,
+  //         });
+  //         // console.log("---",response.data.data[0])
+
+  //         console.log("llego de data: ", response.data.data[0].saldoVacaciones);
+
+  //         setSaldoVacaciones(response.data.data[0].saldoVacaciones); // Almacena el saldo de vacaciones
+  //         // console.log("saldo Vacaciones ", saldoVacaciones);
+  //       } catch (error) {
+  //         console.error("Error fetching saldo:", error);
+  //       }
+  //     };
+   
+     
+  //     fetchSaldoVacaciones(); // Llama a la función para obtener el saldo
+  //   }
+  // }, [solicitud]);
+
+
+
+
 
   const formatFecha = (fecha) => {
     return fecha ? fecha.slice(0, 10) : "";
@@ -184,12 +230,42 @@ export const VerSolicitudVacaciones = () => {
 
   return (
     <div className="pl-10 pr-10 flex flex-col gap-5">
-      <div>
+      <div className="flex w-full justify-between">
+        <div>
+        <Row gutter={16} >
+          <Col span={12}>
+            <Statistic
+             className="flex gap-5 items-center"
+              title="Saldo de dias de vacaciones"
+              value={saldoVacaciones || 0}
+            />
+          </Col>
+        </Row> 
+        </div>
         <Row gutter={16}>
           <Col span={12}>
             <Statistic
-              title="Saldo de dias de vacaciones"
-              value={saldoVacaciones || 0}
+            className="flex gap-5 items-center"
+              title="Vacaciones Truncas"
+              value={vacacionestruncas || 0}
+            />
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Statistic
+            className="flex gap-5 items-center"
+              title="Vacaciones Pendientes"
+              value={vacacionesPendientes|| 0}
+            />
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Statistic
+            className="flex gap-5 items-center"
+              title="Vacaciones Vencidas"
+              value={vacacionesVencidas || 0}
             />
           </Col>
         </Row>

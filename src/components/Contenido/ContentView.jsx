@@ -17,6 +17,7 @@ import { VerSolicitudAprobada } from "../../pages/views/VerSolicitudAprobada";
 import { CalendarioJefes } from "../../pages/views/CalendarioJefes";
 import FormularioVacacionesAsesor from "../../pages/views/FormularioVacacionesAsesor";
 import SolicitudesAsesores from "../../pages/views/SolicitudesAsesores";
+import DetalleEmpleado from "../../pages/views/DetalleEmpleado";
  
 export const ContentView = () => {
   return (
@@ -40,6 +41,7 @@ export const ContentView = () => {
          {/* Para Registro de vacaciones Asesores */}
         <Route path="/registrarVacacionesAsesor" element={<FormularioVacacionesAsesor/>} ></Route>
         <Route path="/listarSolicitudesAsesores" element={<SolicitudesAsesores/>} ></Route>
+        <Route path="/detalleEmpleado/:idEmpleado" element={<DetalleEmpleado/>} ></Route>
         </Routes>
     </div>
   );
