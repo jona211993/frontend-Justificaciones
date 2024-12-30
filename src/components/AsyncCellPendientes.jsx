@@ -22,7 +22,7 @@ const AsyncCellPendientes = ({ idEmpleado, endpoint, title, fechaElegida }) => {
         }
       };
       fetchData();
-    }, [idEmpleado, endpoint]);
+    }, [idEmpleado, endpoint,fechaElegida]);
   
     return loading ? <Spin /> : <span>{value}</span>;
 }

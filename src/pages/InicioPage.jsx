@@ -23,7 +23,7 @@ function InicioPage() {
         <MenuList />
       </Sider>
       <Layout>
-        <Header className="p-0 bg-gray-100 ">                   
+        <Header className="p-0 m-0 h-5 bg-gray-50">                   
         </Header>
         <ContentView />
       </Layout>

@@ -12,6 +12,8 @@ import "../../styles/tabla.css";
 // import AsyncCellTruncas from '../../components/AsyncCellTruncas.jsx';
 import AsyncCellPendientes from '../../components/AsyncCellPendientes.jsx';
 import AsyncCellVencidas from '../../components/AsyncCellVencidas.jsx';
+import AsyncCellNumMesesPeriodo from '../../components/AsyncCellNumMesesPeriodo.jsx';
+
 const EmpleadosAlertaVacaciones = () => {
 
     const [empleadosStaff, setEmpleadosStaff] = useState([]);
@@ -98,6 +100,26 @@ useEffect(() => {
         width: 150,
       } ,
       {
+        title: 'Fec Ingreso',
+        dataIndex: 'fecIngreso', // Asegúrate de que 'cargo' sea la propiedad correcta en tus datos
+        width: 150,
+        render: (fecha) => (fecha ? dayjs(fecha).format('YYYY-MM-DD') : ''),
+      } ,
+      {
+        title: '# Meses Nuevo Periodo',
+        dataIndex: 'idEmpleado',
+        key: 'numMeses',
+        width: 150,
+        render: (idEmpleado) => (
+          <AsyncCellNumMesesPeriodo
+            idEmpleado={idEmpleado[0]}
+            endpoint="/obtenerInfoVacaciones"
+            fechaElegida={fechaElegida}
+            title="Cálculo Meses"
+          />
+        ),
+      },
+      {
         title: 'TRUNCAS',
         dataIndex: 'truncas', // Ahora usamos el valor precalculado
         sorter: (a, b) => b.truncas - a.truncas, // Ordenar de mayor a menor
@@ -140,12 +162,19 @@ useEffect(() => {
     };
   
     return (
-      <div className=' h-screen flex justify-center items-center flex-col m-5'>
+      <div className=' h-screen flex justify-center items-center flex-col m-5 '>
         <h1 className='mt-20 text-cyan-950 text-3xl'> Posibles Empleados con Alertas</h1>
+        <div className='mt-5 flex  items-center justify-center gap-10'>
+           <label className=' text-red-500 font-bold'> EL cálculo está siendo ejecutado a la fecha : </label>
+            {fechaElegida? <label className='text-xl font-semibold'>{fechaElegida}</label> : <></>}
+        </div>
         <div className='mt-5 flex gap-10 items-center'> 
           <label className='font-semibold text-lg'> Para recalcular a una fecha específca: </label>
         <DatePicker onChange={onChange} placeholder='Elija una fecha' />
+
+       
         </div>
+        
         <div className='w-full mt-10 max-h-screen'>
           <Table
             className="custom-table"

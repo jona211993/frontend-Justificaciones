@@ -22,7 +22,7 @@ import EmpleadosAlertaVacaciones from "../../pages/views/EmpleadosAlertaVacacion
  
 export const ContentView = () => {
   return (
-    <div className=" h-full overflow-auto" >     
+    <div className=" h-full overflow-auto  pt-10" >     
 
       <Routes>
         <Route path="/" element={<Home />}></Route>
