@@ -124,7 +124,7 @@ export const RegistrarSolicitudVacaciones = () => {
         <div className="w-2/5 rounded-lg shadow-lg p-4 flex items-center">
           <Calendar
             className="custom-calendar"
-            // disabledDate={disabledDate}
+            disabledDate={disabledDate}
             cellRender={dateCellRender}
             
           />
@@ -151,7 +151,7 @@ export const RegistrarSolicitudVacaciones = () => {
               ]}
             >
               {/* disabledDate={disabledDate} */}
-              <RangePicker  />
+              <RangePicker  disabledDate={disabledDate} />
             </Form.Item>
 
             <Form.Item

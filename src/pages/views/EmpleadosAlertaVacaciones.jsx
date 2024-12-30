@@ -1,11 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 
 import { useState, useEffect } from 'react';
 import { listarEmpleadosStaffRequest } from "../../API/empleadosStaff.js";
-import { Table } from 'antd';
+import { Table,DatePicker } from 'antd';
 import { FilterOutlined } from '@ant-design/icons';
 import axios from "../../API/axios.js";
-
+import dayjs from 'dayjs';
 
 import "../../styles/tabla.css";
 // import AsyncCellTruncas from '../../components/AsyncCellTruncas.jsx';
@@ -15,6 +16,9 @@ const EmpleadosAlertaVacaciones = () => {
 
     const [empleadosStaff, setEmpleadosStaff] = useState([]);
     const [loading, setLoading] = useState(false);
+    //PARA OBTENER  EL ULTMO DA DEL MES  ANTERIOR
+    const lastDayOfPreviousMonth = dayjs().subtract(1, 'month').endOf('month').format('YYYY-MM-DD');
+    const [fechaElegida, setFechaElegida] = useState(lastDayOfPreviousMonth);
 
     const obtenerEmpleadosStaff = async () => {
         setLoading(true);
@@ -44,7 +48,7 @@ const EmpleadosAlertaVacaciones = () => {
    // Función para obtener el valor de TRUNCAS
    const obtenerValorTruncas = async (idEmpleado) => {
     try {
-        const response = await axios.post('/obtenerInfoVacaciones', { idEmpleado, fecMes:"2024-12-01" });
+        const response = await axios.post('/obtenerInfoVacaciones', { idEmpleado, fecMes:fechaElegida });
         return response.data.data[0].Truncas; // Ajusta esto según la respuesta de tu API
     } catch (error) {
         console.error(`Error al obtener TRUNCAS para el empleado ${idEmpleado}:`, error);
@@ -54,7 +58,7 @@ const EmpleadosAlertaVacaciones = () => {
 
 useEffect(() => {
     obtenerEmpleadosStaff();
-}, []);
+}, [fechaElegida]);
   
     const data = empleadosStaff.map((empleado, index) => ({
       ...empleado,
@@ -108,6 +112,7 @@ useEffect(() => {
           <AsyncCellPendientes
             idEmpleado={idEmpleado[0]}
             endpoint="/obtenerInfoVacaciones"
+            fechaElegida={fechaElegida}
             title="Cálculo 2"
           />
         ),
@@ -121,16 +126,26 @@ useEffect(() => {
           <AsyncCellVencidas
             idEmpleado={idEmpleado[0]}
             endpoint="/obtenerInfoVacaciones"
+            fechaElegida={fechaElegida}
             title="Cálculo 3"
           />
         ),
       },
     
     ];
+
+    const onChange = (date, dateString) => {
+      console.log(dateString);
+      setFechaElegida(dateString)
+    };
   
     return (
       <div className=' h-screen flex justify-center items-center flex-col m-5'>
-        <h1 className='mt-5 text-cyan-950 text-3xl'> Posibles Empleados con Alertas</h1>
+        <h1 className='mt-20 text-cyan-950 text-3xl'> Posibles Empleados con Alertas</h1>
+        <div className='mt-5 flex gap-10 items-center'> 
+          <label className='font-semibold text-lg'> Para recalcular a una fecha específca: </label>
+        <DatePicker onChange={onChange} placeholder='Elija una fecha' />
+        </div>
         <div className='w-full mt-10 max-h-screen'>
           <Table
             className="custom-table"
@@ -140,7 +155,7 @@ useEffect(() => {
               pageSize: 50,
             }}
             scroll={{
-              y: 240,
+              y: 340,
             }}
           />
         </div>

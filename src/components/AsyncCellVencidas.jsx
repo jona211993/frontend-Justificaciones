@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Spin } from 'antd';
 import axios from "../API/axios.js";
 
-const AsyncCellVencidas = ({ idEmpleado, endpoint, title }) => {
+const AsyncCellVencidas = ({ idEmpleado, endpoint, title, fechaElegida }) => {
     const [loading, setLoading] = useState(true);
     const [value, setValue] = useState(null);
   
@@ -13,7 +13,7 @@ const AsyncCellVencidas = ({ idEmpleado, endpoint, title }) => {
         setLoading(true);
         try {
           console.log(endpoint)
-          const response = await axios.post(endpoint, { idEmpleado,  fecMes: "2024-12-01" });
+          const response = await axios.post(endpoint, { idEmpleado,  fecMes: fechaElegida });
           setValue(response.data.data[0].Vencidas); // Asegúrate de ajustar según tu API
         } catch (error) {
           console.error(`Error fetching ${title}:`, error);

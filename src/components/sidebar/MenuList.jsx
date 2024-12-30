@@ -8,6 +8,7 @@ import {
   AuditOutlined,
   CalendarOutlined,
   LogoutOutlined,
+  WarningOutlined
 } from "@ant-design/icons";
 
 const { SubMenu, Item } = Menu;
@@ -38,7 +39,7 @@ export const MenuList = () => {
           </Item>          
         )}
          {user.user.id_cargo == 1 && (
-          <Item key="empleadosAlertaVacaciones" icon={<TeamOutlined />}>
+          <Item key="empleadosAlertaVacaciones" icon={<WarningOutlined />}>
             <Link to="/expertisRH/empleadosAlertaVacaciones">ALERTA VACACIONES</Link>
           </Item>          
         )}

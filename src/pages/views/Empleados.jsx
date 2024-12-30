@@ -60,7 +60,7 @@ export const Empleados = () => {
       width: 150,
     },
     {
-      title: 'Acciones',
+      title: 'Ver información',
       key: 'acciones', // Define un identificador único para esta columna
       width: 150,
       
@@ -85,10 +85,10 @@ export const Empleados = () => {
           columns={columns}
           dataSource={data}
           pagination={{
-            pageSize: 50,
+            pageSize: 10,
           }}
           scroll={{
-            y: 240,
+            y: 400,
           }}
         />
       </div>

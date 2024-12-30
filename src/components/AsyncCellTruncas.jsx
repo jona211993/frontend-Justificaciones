@@ -13,7 +13,7 @@ const AsyncCellTruncas = ({ idEmpleado, endpoint, title }) => {
       setLoading(true);
       try {
         console.log(endpoint)
-        const response = await axios.post(endpoint, { idEmpleado,  fecMes: "2024-12-01" });
+        const response = await axios.post(endpoint, { idEmpleado,  fecMes: "2024-11-30" });
         setValue(response.data.data[0].Truncas); // Asegúrate de ajustar según tu API
       } catch (error) {
         console.error(`Error fetching ${title}:`, error);

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Col, Row, Statistic } from "antd";
 import axios from "../../API/axios.js";
 import { listarEmpleadosStaffRequest } from "../../API/empleadosStaff.js";
-// import dayjs from 'dayjs';
+import dayjs from 'dayjs';
 
 const DetalleEmpleado = () => {
   const { idEmpleado } = useParams(); // 'id' es el nombre que aparece en la ruta
@@ -15,13 +15,16 @@ const DetalleEmpleado = () => {
   const [vacacionesVencidas, setVacacionesVencidas] = useState(null);
   const [empleadosStaff, setEmpleadosStaff] = useState([]);
   const [empleadoElegido, setEmpleadoElegido] = useState(null); 
+  const lastDayOfPreviousMonth = dayjs().subtract(1, 'month').endOf('month').format('YYYY-MM-DD');
+  // eslint-disable-next-line no-unused-vars
+  const [fechaElegida, setFechaElegida] = useState(lastDayOfPreviousMonth);
   useEffect(() => {
     const fetchInfoVacaciones = async () => {
       try {
         //   const MesEnviar = dayjs(solicitud.fecFinal).subtract(1, 'month').startOf('month').format('YYYY-MM-DD')
         //   console.log("**** , ", MesEnviar)
 
-        const MesEnviar = "2024-12-01";
+        const MesEnviar = fechaElegida;
 
         const response = await axios.post(
           "/obtenerInfoVacaciones", // URL de la API
