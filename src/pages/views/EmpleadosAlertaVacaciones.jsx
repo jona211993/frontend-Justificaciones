@@ -199,7 +199,7 @@ useEffect(() => {
        
         </div>
         
-        <div className='w-full mt-10 max-h-screen'>
+        { data ? (<div className='w-full mt-10 max-h-screen'>
           <Table
             className="custom-table"
             columns={columns}
@@ -211,7 +211,10 @@ useEffect(() => {
               y: 340,
             }}
           />
-        </div>
+        </div>) : (<></>)
+
+        }
+        
       </div>
     );
 }
