@@ -5,7 +5,7 @@ export const listarEmpleadosStaffRequest = () => {
     return axios.get(`/obtenerEmpleadosStaff`, {withCredentials: true})
       .then(response => {
         // Maneja la respuesta aquí
-        console.log(response.data);
+        // console.log(response.data);
         return response.data; // Si necesitas devolver los datos
       })
       .catch(error => {

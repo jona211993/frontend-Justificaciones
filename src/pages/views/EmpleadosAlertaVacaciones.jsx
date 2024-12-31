@@ -31,19 +31,25 @@ const EmpleadosAlertaVacaciones = () => {
             // Precalcular los valores de TRUNCAS
             const empleadosConValores = await Promise.all(
                 empleados.map(async (empleado) => {
-                    const truncas = await obtenerValorTruncas(empleado.idEmpleado[0]);
+                    const datos = await obtenerValorTruncas(empleado.idEmpleado[0]
+
+                    );                  
+                  
                     return {
-                        ...empleado,
-                        truncas,
+                        ...empleado,  
+                        datos,                        
                     };
                 })
             );
-
-            setEmpleadosStaff(empleadosConValores);
+             
+           return empleadosConValores
+            
+            
         } catch (error) {
             console.error("Hubo un error al obtener los empleados del Staff", error);
         } finally {
             setLoading(false);
+            console.log("------ > ", empleadosStaff)
         }
     };
   
@@ -51,15 +57,28 @@ const EmpleadosAlertaVacaciones = () => {
    const obtenerValorTruncas = async (idEmpleado) => {
     try {
         const response = await axios.post('/obtenerInfoVacaciones', { idEmpleado, fecMes:fechaElegida });
-        return response.data.data[0].Truncas; // Ajusta esto según la respuesta de tu API
+        // console.log(response.data.data)
+        return response.data.data; // Ajusta esto según la respuesta de tu API
+        
     } catch (error) {
         console.error(`Error al obtener TRUNCAS para el empleado ${idEmpleado}:`, error);
         return 0; // Valor por defecto si hay un error
     }
 };
 
+
 useEffect(() => {
-    obtenerEmpleadosStaff();
+  const fetchEmpleadosStaff = async () => {
+      try {
+          const empleados = await obtenerEmpleadosStaff(); // Espera a que se resuelva la promesa
+          console.log(empleados); // Imprime los empleados obtenidos
+          setEmpleadosStaff(empleados); // Establece el estado con los empleados obtenidos
+      } catch (error) {
+          console.error('Error al obtener empleados staff:', error); // Maneja errores
+      }
+  };
+
+  fetchEmpleadosStaff(); // Llama a la función asíncrona
 }, [fechaElegida]);
   
     const data = empleadosStaff.map((empleado, index) => ({
@@ -105,54 +124,59 @@ useEffect(() => {
         width: 150,
         render: (fecha) => (fecha ? dayjs(fecha).format('YYYY-MM-DD') : ''),
       } ,
-      {
-        title: '# Meses Nuevo Periodo',
-        dataIndex: 'idEmpleado',
-        key: 'numMeses',
-        width: 150,
-        render: (idEmpleado) => (
-          <AsyncCellNumMesesPeriodo
-            idEmpleado={idEmpleado[0]}
-            endpoint="/obtenerInfoVacaciones"
-            fechaElegida={fechaElegida}
-            title="Cálculo Meses"
-          />
-        ),
-      },
+      // {
+      //   title: '# Meses Nuevo Periodo',
+      //   dataIndex: 'idEmpleado',
+      //   key: 'numMeses',
+      //   width: 150,
+      //   render: (idEmpleado) => (
+      //     <AsyncCellNumMesesPeriodo
+      //       idEmpleado={idEmpleado[0]}
+      //       endpoint="/obtenerInfoVacaciones"
+      //       fechaElegida={fechaElegida}
+      //       title="Cálculo Meses"
+      //     />
+      //   ),
+      // },
       {
         title: 'TRUNCAS',
-        dataIndex: 'truncas', // Ahora usamos el valor precalculado
-        sorter: (a, b) => b.truncas - a.truncas, // Ordenar de mayor a menor
+        dataIndex: 'datos', // Apuntamos a 'datos'
+        key: 'idEMpleado', // Una clave única para esta columna
+        render: (datos) => datos?.[0]?.Truncas || '0',
+        sorter: (a, b) => (a.datos?.[0]?.Truncas || 0) - (b.datos?.[0]?.Truncas || 0), // Ordenar de mayor a menor
         width: 150,
     },
+      // {
+      //   title: 'PENDIENTES',
+      //   dataIndex: 'idEmpleado',
+      //   key: 'vPendientes',
+      //   width: 150,
+      //   render: (idEmpleado) => (
+      //     <AsyncCellPendientes
+      //       idEmpleado={idEmpleado[0]}
+      //       endpoint="/obtenerInfoVacaciones"
+      //       fechaElegida={fechaElegida}
+      //       title="Cálculo 2"
+      //     />
+      //   ),
+      // },
       {
         title: 'PENDIENTES',
-        dataIndex: 'idEmpleado',
-        key: 'vPendientes',
+        dataIndex: 'datos', // Apuntamos a 'datos'
+        key: 'idEMpleado', // Una clave única para esta columna
+        render: (datos) => datos?.[0]?.Pendientes || '0',
+        sorter: (a, b) => (a.datos?.[0]?.Pendientes || 0) - (b.datos?.[0]?.Pendientes || 0), // Ordenar de mayor a menor
         width: 150,
-        render: (idEmpleado) => (
-          <AsyncCellPendientes
-            idEmpleado={idEmpleado[0]}
-            endpoint="/obtenerInfoVacaciones"
-            fechaElegida={fechaElegida}
-            title="Cálculo 2"
-          />
-        ),
-      },
-      {
-        title: 'VENCIDAS',
-        dataIndex: 'idEmpleado',
-        key: 'vVencidas',
-        width: 150,
-        render: (idEmpleado) => (
-          <AsyncCellVencidas
-            idEmpleado={idEmpleado[0]}
-            endpoint="/obtenerInfoVacaciones"
-            fechaElegida={fechaElegida}
-            title="Cálculo 3"
-          />
-        ),
-      },
+    },
+      
+    {
+      title: 'VENCIDAS',
+      dataIndex: 'datos', // Apuntamos a 'datos'
+      key: 'idEMpleado', // Una clave única para esta columna
+      render: (datos) => datos?.[0]?.Vencidas || '0',
+      sorter: (a, b) => (a.datos?.[0]?.Vencidas || 0) - (b.datos?.[0]?.Vencidas || 0), // Ordenar de mayor a menor
+      width: 150,
+  },
     
     ];
 
