@@ -46,8 +46,8 @@ export const RegistrarSolicitudVacaciones = () => {
           const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/obtenerDiasOcupadosPorAreaPorCargo/${idArea}`);
           const data = await response.json();
           const ranges = data.data.map(item => ({
-            start: dayjs(item.fecInicial).add(1, 'day'),
-            end: dayjs(item.fecFinal).add(1, 'day'), // Sumar un día al final del rango
+            start: dayjs(item.fecInicial).add(0, 'day'),
+            end: dayjs(item.fecFinal).add(0, 'day'), // Sumar un día al final del rango
           }));
   
            console.log("de dias ocupados ",data)
