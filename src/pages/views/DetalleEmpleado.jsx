@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Col, Row, Statistic } from "antd";
 import axios from "../../API/axios.js";
 import { listarEmpleadosStaffRequest } from "../../API/empleadosStaff.js";
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 
 const DetalleEmpleado = () => {
   const { idEmpleado } = useParams(); // 'id' es el nombre que aparece en la ruta
@@ -14,8 +14,11 @@ const DetalleEmpleado = () => {
   const [vacacionesPendientes, setVacacionesPendientes] = useState(null);
   const [vacacionesVencidas, setVacacionesVencidas] = useState(null);
   const [empleadosStaff, setEmpleadosStaff] = useState([]);
-  const [empleadoElegido, setEmpleadoElegido] = useState(null); 
-  const lastDayOfPreviousMonth = dayjs().subtract(1, 'month').endOf('month').format('YYYY-MM-DD');
+  const [empleadoElegido, setEmpleadoElegido] = useState(null);
+  const lastDayOfPreviousMonth = dayjs()
+    .subtract(1, "month")
+    .endOf("month")
+    .format("YYYY-MM-DD");
   // eslint-disable-next-line no-unused-vars
   const [fechaElegida, setFechaElegida] = useState(lastDayOfPreviousMonth);
   useEffect(() => {
@@ -55,35 +58,34 @@ const DetalleEmpleado = () => {
     fetchInfoVacaciones();
   }, []);
 
-    const obtenerEmpleadosStaff = async () => {
-      try {
-        const response = await listarEmpleadosStaffRequest();
-        setEmpleadosStaff(response.data); // Actualiza el estado con los datos recibidos
-      } catch (error) {
-        console.error("Hubo un error al obtener los empleados del Staff", error);
-      }
-    };
-  
-    useEffect(() => {
-      obtenerEmpleadosStaff();
-    }, []);
+  const obtenerEmpleadosStaff = async () => {
+    try {
+      const response = await listarEmpleadosStaffRequest();
+      setEmpleadosStaff(response.data); // Actualiza el estado con los datos recibidos
+    } catch (error) {
+      console.error("Hubo un error al obtener los empleados del Staff", error);
+    }
+  };
 
+  useEffect(() => {
+    obtenerEmpleadosStaff();
+  }, []);
 
-    // Filtra el empleado específico cuando cambie el array de empleadosStaff o idEmpleado
-    useEffect(() => {
-        if (empleadosStaff.length > 0 && idEmpleado) {
-          const empleado = empleadosStaff.find(
-            (emp) => emp.idEmpleado[0] === parseInt(idEmpleado) // Ajusta según el formato de idEmpleado
-          );
-          setEmpleadoElegido(empleado || null);
-        }
-      }, [empleadosStaff, idEmpleado]);
-    
+  // Filtra el empleado específico cuando cambie el array de empleadosStaff o idEmpleado
+  useEffect(() => {
+    if (empleadosStaff.length > 0 && idEmpleado) {
+      const empleado = empleadosStaff.find(
+        (emp) => emp.idEmpleado[0] === parseInt(idEmpleado) // Ajusta según el formato de idEmpleado
+      );
+      setEmpleadoElegido(empleado || null);
+    }
+  }, [empleadosStaff, idEmpleado]);
+
   return (
     <div className=" w-full h-full">
-    <div className="w-full text-xl font-bold bg-blue-950 text-white pt-2 pb-2 flex items-center justify-center">
-  {empleadoElegido ? empleadoElegido.nombreCompleto : <>Cargando</>}
-</div>
+      <div className="w-full text-xl font-bold bg-blue-950 text-white pt-2 pb-2 flex items-center justify-center">
+        {empleadoElegido ? empleadoElegido.nombreCompleto : <>Cargando</>}
+      </div>
       <div className="flex w-full justify-between pl-10 pr-10 mt-5 ">
         <Row gutter={16}>
           <Col span={12}>
@@ -124,41 +126,67 @@ const DetalleEmpleado = () => {
       </div>
       <div className="mt-5">
         <label className="font-bold text-xl pl-5"> Datos del Empleado</label>
-       
       </div>
-     <div className=" flex  items-center justify-center gap-20">
-     <div className=" w-1/2 mt-5  pt-4 pb-4">
-       
-       {empleadoElegido ? (
-         <div className="pl-16 mt-3 flex  flex-col gap-2">
-           <p><b>Nombre:</b> {empleadoElegido.nombres}</p>
-           <p><b>Departamento:</b> {empleadoElegido.apellidos}</p>
-           <p><b>Documento:</b> {empleadoElegido.documento}</p>
-           <p><b>Fecha Ingreso:</b> {empleadoElegido.fecInicioGestion}</p>
-           <p><b>Fecha de nacimiento:</b> {empleadoElegido.fecNacimiento}</p>
-           <p><b>Sexo:</b> {empleadoElegido.sexo}</p>
-           <p><b>Estado civil :</b> {empleadoElegido.estadoCivil}</p>
-           <p><b>Número de hijos :</b> {empleadoElegido.nroHijos}</p>
-           <p><b>Correo :</b> {empleadoElegido.correo}</p>
-           <p><b>Cargo :</b> {empleadoElegido.descripcion}</p>
-           <p><b>Área :</b> {empleadoElegido.nombreArea}</p>
-           
-           {/* Agrega aquí más información del empleadoElegido según lo necesites */}
-         </div>
-       ) : (
-         <p className="pl-5 mt-3">Cargando información del empleado...</p>
-       )}
-     </div> 
-     <div className=" w-1/2 mt-5  pt-4 pb-4 flex justify-center">
-     <div className="w-72 h-72 bg-gray-400 flex items-center justify-center">
-      <img
-        src="https://cdn-icons-png.flaticon.com/512/6522/6522581.png"
-        alt="Ejemplo"
-        className="w-full h-full object-contain"
-      />
-    </div>
-     </div>
-     </div>
+      <div className=" flex  items-center justify-center gap-20">
+        <div className=" w-1/2 mt-5  pt-4 pb-4">
+          {empleadoElegido ? (
+            <div className="pl-16 mt-3 flex  flex-col gap-2">
+              <p>
+                <b>Nombre:</b> {empleadoElegido.nombres}
+              </p>
+              <p>
+                <b>Departamento:</b> {empleadoElegido.apellidos}
+              </p>
+              <p>
+                <b>Documento:</b> {empleadoElegido.documento}
+              </p>
+              <p>
+                <b>Fecha Ingreso:</b>{" "}
+                {empleadoElegido.fecInicioGestion
+                  ? dayjs(empleadoElegido.fecInicioGestion).format("YYYY-MM-DD")
+                  : "No disponible"}
+              </p>
+              <p>
+                <b>Fecha de nacimiento:</b> {""}
+                {empleadoElegido.fecNacimiento
+                  ? dayjs(empleadoElegido.fecNacimiento).format("YYYY-MM-DD")
+                  : "No disponible"}
+              </p>
+              <p>
+                <b>Sexo:</b> {empleadoElegido.sexo}
+              </p>
+              <p>
+                <b>Estado civil :</b> {empleadoElegido.estadoCivil}
+              </p>
+              <p>
+                <b>Número de hijos :</b> {empleadoElegido.nroHijos}
+              </p>
+              <p>
+                <b>Correo :</b> {empleadoElegido.correo}
+              </p>
+              <p>
+                <b>Cargo :</b> {empleadoElegido.descripcion}
+              </p>
+              <p>
+                <b>Área :</b> {empleadoElegido.nombreArea}
+              </p>
+
+              {/* Agrega aquí más información del empleadoElegido según lo necesites */}
+            </div>
+          ) : (
+            <p className="pl-5 mt-3">Cargando información del empleado...</p>
+          )}
+        </div>
+        <div className=" w-1/2 mt-5  pt-4 pb-4 flex justify-center">
+          <div className="w-72 h-72 bg-gray-400 flex items-center justify-center">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/6522/6522581.png"
+              alt="Ejemplo"
+              className="w-full h-full object-contain"
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

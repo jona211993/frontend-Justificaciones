@@ -1,28 +1,20 @@
 import { useState, useEffect } from 'react';
-import { Table, Tag, Button, Space } from 'antd';
-import { EyeOutlined } from '@ant-design/icons';
+import { Table, Tag, Button, Space, Input } from 'antd';
+import { EyeOutlined, FilterOutlined, SearchOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { useAuth } from "../../contexts/AuthContext.jsx";
-import { FilterOutlined } from '@ant-design/icons';
-
 import axios from '../../API/axios';
-import '../../styles/SolicitudesEquipo.css'; // Importa el archivo CSS para estilos personalizados
+import '../../styles/SolicitudesEquipo.css';
 
 export const SolicitudesAprobadasGerencia = () => {
   const [enProceso, setEnProceso] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const { setIdSolVac } = useAuth(); // Elimina `user` si ya no es necesario
+  const { setIdSolVac } = useAuth();
   const [filters, setFilters] = useState({});
   const [pagination, setPagination] = useState({ current: 1, pageSize: 5 });
+  const [searchTerm, setSearchTerm] = useState(''); // Estado para el término de búsqueda
 
-  // Define los IDs de empleados permitidos para el filtro
-  const allowedEmployeeIds = [167,
-    170,
-    219,
-    179,
-    209,
-    196
-    ]; // Sustituye estos valores con los IDs que correspondan
+  const allowedEmployeeIds = [167, 170, 219, 179, 209, 196];
 
   useEffect(() => {
     const fetchSolicitudes = async () => {
@@ -30,14 +22,21 @@ export const SolicitudesAprobadasGerencia = () => {
         const pendientesResponse = await axios.get(`/obtenerSolicitudesAprobadasTodas`, { withCredentials: true });
         const pendientesData = pendientesResponse.data.data || [];
         setEnProceso(pendientesData);
-        setFilteredData(pendientesData); // Inicializa el estado de datos filtrados
+        setFilteredData(pendientesData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
-
     fetchSolicitudes();
   }, []);
+
+  useEffect(() => {
+    // Filtra los datos en función del término de búsqueda
+    const filtered = enProceso.filter(item =>
+      item.alias.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredData(filtered);
+  }, [searchTerm, enProceso]);
 
   const handleVer = (id) => {
     console.log("El id enviado es: " + id);
@@ -55,7 +54,7 @@ export const SolicitudesAprobadasGerencia = () => {
   };
 
   const handleClearFilter = () => {
-    setFilteredData(enProceso); // Restaura los datos originales
+    setFilteredData(enProceso);
   };
 
   const getUniqueAreas = (data) => {
@@ -142,14 +141,25 @@ export const SolicitudesAprobadasGerencia = () => {
   return (
     <div className='gap-2' style={{ padding: 10, display: 'flex', flexDirection: 'column', height: '90vh' }}>
       <h2 className='mt-0 font-semibold text-lg'>Solicitudes Aprobadas</h2>
-      <Space>
-        <Button className='bg-cyan-700  text-white font-semibold' onClick={handleApplyFilter} icon={<FilterOutlined />}>Filtro Solo Jefes</Button> 
+      <Space className='flex   justify-between pr-20 pl-20 mb-5'>
+        <Input
+          placeholder="Buscar por empleado"
+          prefix={<SearchOutlined />}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          style={{ width: 300 }}
+        />
+        <div className='flex gap-5'>
+        <Button className='bg-cyan-700  text-white font-semibold' onClick={handleApplyFilter} icon={<FilterOutlined />}>
+          Filtro Solo Jefes
+        </Button> 
         <Button onClick={handleClearFilter}>Quitar Filtro</Button>
+        </div>
       </Space>
       <div style={{ flex: 1, overflow: 'auto' }}>
         <Table
           columns={columnsEnProceso}
-          dataSource={filteredData} // Usa los datos filtrados
+          dataSource={filteredData}
           rowKey="idVacacionesSolicitudes"
           scroll={{ x: '100%', y: 500 }}
           pagination={pagination}
