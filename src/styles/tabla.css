@@ -13,3 +13,8 @@
    color: white
     
   }
+
+
+  .custom-table .ant-table-column-sort {
+    background-color: #8aca4f !important; /* Cambia el gris claro a un azul suave */
+  }

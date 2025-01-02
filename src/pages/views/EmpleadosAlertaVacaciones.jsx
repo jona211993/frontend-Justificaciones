@@ -92,9 +92,21 @@ const EmpleadosAlertaVacaciones = () => {
       render: (fecha) => (fecha ? dayjs(fecha).format('YYYY-MM-DD') : ''),
     },
     {
+      title: '# Meses Nuevo Periodo',
+      dataIndex: 'datos',
+      width: 150,
+      render: (datos) => {
+        if (!datos || !datos[0]?.FEC_INICIOTRUNCAS) return "Sin datos";
+    
+        // Calcula la diferencia en meses
+        const mesesTranscurridos = dayjs(fechaElegida).diff(dayjs(datos[0].FEC_INICIOTRUNCAS).format("YYYY-MM-DD"), "months", true);
+        return mesesTranscurridos.toFixed(1); // Redondea a 0 decimal
+      },
+    },
+    {
       title: 'TRUNCAS',
       dataIndex: 'datos',
-      key: 'idEMpleado',
+      key: 'truncas',
       render: (datos) => datos?.[0]?.Truncas || '0',
       sorter: (a, b) => (a.datos?.[0]?.Truncas || 0) - (b.datos?.[0]?.Truncas || 0),
       width: 150,
@@ -102,7 +114,7 @@ const EmpleadosAlertaVacaciones = () => {
     {
       title: 'PENDIENTES',
       dataIndex: 'datos',
-      key: 'idEMpleado',
+      key: 'pendientes',
       render: (datos) => datos?.[0]?.Pendientes || '0',
       sorter: (a, b) => (a.datos?.[0]?.Pendientes || 0) - (b.datos?.[0]?.Pendientes || 0),
       width: 150,
@@ -110,7 +122,7 @@ const EmpleadosAlertaVacaciones = () => {
     {
       title: 'VENCIDAS',
       dataIndex: 'datos',
-      key: 'idEMpleado',
+      key: 'vencidas',
       render: (datos) => datos?.[0]?.Vencidas || '0',
       sorter: (a, b) => (a.datos?.[0]?.Vencidas || 0) - (b.datos?.[0]?.Vencidas || 0),
       width: 150,

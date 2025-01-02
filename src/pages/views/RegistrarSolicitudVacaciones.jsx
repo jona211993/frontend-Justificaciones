@@ -40,24 +40,53 @@ export const RegistrarSolicitudVacaciones = () => {
     const fetchBlockedDates = async () => {
       try {
         const idArea = user.user.idArea;
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/obtenerDiasOcupados/${idArea}`);
-        const data = await response.json();
-        const ranges = data.data.map(item => ({
-          start: dayjs(item.fecInicial).add(1, 'day'),
-          end: dayjs(item.fecFinal).add(1, 'day'), // Sumar un día al final del rango
-        }));
 
-          // Calcular los próximos 6 días (incluyendo hoy) como fechas bloqueadas
-          const today = dayjs();
-          console.log("hoy es : ",today)
-          
-
-          // const nextSevenDays = Array.from({ length: 1}, (_, i) => ({
-          //   start: today.add(i, 'day'),
-          //   end: today.add(i, 'day'),
-          // }));
-          // , ...nextSevenDays
-          setBlockedRanges([...ranges]);
+        if(user.user.id_cargo===5){
+          console.log("Entrando como super")
+          const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/obtenerDiasOcupadosPorAreaPorCargo/${idArea}`);
+          const data = await response.json();
+          const ranges = data.data.map(item => ({
+            start: dayjs(item.fecInicial).add(1, 'day'),
+            end: dayjs(item.fecFinal).add(1, 'day'), // Sumar un día al final del rango
+          }));
+  
+           console.log("de dias ocupados ",data)
+  
+            // Calcular los próximos 6 días (incluyendo hoy) como fechas bloqueadas
+            const today = dayjs();
+            console.log("hoy es : ",today)
+            
+  
+            // const nextSevenDays = Array.from({ length: 1}, (_, i) => ({
+            //   start: today.add(i, 'day'),
+            //   end: today.add(i, 'day'),
+            // }));
+            // , ...nextSevenDays
+            setBlockedRanges([...ranges]);
+        
+        }else{
+          const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/obtenerDiasOcupados/${idArea}`);
+          const data = await response.json();
+          const ranges = data.data.map(item => ({
+            start: dayjs(item.fecInicial).add(1, 'day'),
+            end: dayjs(item.fecFinal).add(1, 'day'), // Sumar un día al final del rango
+          }));
+  
+           console.log("de dias ocupados ",data)
+  
+            // Calcular los próximos 6 días (incluyendo hoy) como fechas bloqueadas
+            const today = dayjs();
+            console.log("hoy es : ",today)
+            
+  
+            // const nextSevenDays = Array.from({ length: 1}, (_, i) => ({
+            //   start: today.add(i, 'day'),
+            //   end: today.add(i, 'day'),
+            // }));
+            // , ...nextSevenDays
+            setBlockedRanges([...ranges]);
+        }
+        
 
       } catch (error) {
         console.error('Error fetching blocked dates:', error);
