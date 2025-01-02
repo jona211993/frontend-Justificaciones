@@ -10,9 +10,9 @@ import dayjs from 'dayjs';
 
 import "../../styles/tabla.css";
 // import AsyncCellTruncas from '../../components/AsyncCellTruncas.jsx';
-import AsyncCellPendientes from '../../components/AsyncCellPendientes.jsx';
-import AsyncCellVencidas from '../../components/AsyncCellVencidas.jsx';
-import AsyncCellNumMesesPeriodo from '../../components/AsyncCellNumMesesPeriodo.jsx';
+// import AsyncCellPendientes from '../../components/AsyncCellPendientes.jsx';
+// import AsyncCellVencidas from '../../components/AsyncCellVencidas.jsx';
+// import AsyncCellNumMesesPeriodo from '../../components/AsyncCellNumMesesPeriodo.jsx';
 
 const EmpleadosAlertaVacaciones = () => {
 
@@ -23,35 +23,24 @@ const EmpleadosAlertaVacaciones = () => {
     const [fechaElegida, setFechaElegida] = useState(lastDayOfPreviousMonth);
 
     const obtenerEmpleadosStaff = async () => {
-        setLoading(true);
-        try {
-            const response = await listarEmpleadosStaffRequest();
-            const empleados = response.data;
-
-            // Precalcular los valores de TRUNCAS
-            const empleadosConValores = await Promise.all(
-                empleados.map(async (empleado) => {
-                    const datos = await obtenerValorTruncas(empleado.idEmpleado[0]
-
-                    );                  
-                  
-                    return {
-                        ...empleado,  
-                        datos,                        
-                    };
-                })
-            );
-             
-           return empleadosConValores
-            
-            
-        } catch (error) {
-            console.error("Hubo un error al obtener los empleados del Staff", error);
-        } finally {
-            setLoading(false);
-            console.log("------ > ", empleadosStaff)
-        }
-    };
+      setLoading(true);
+      try {
+          const response = await listarEmpleadosStaffRequest();
+          const empleados = response.data;
+  
+          const empleadosConValores = [];
+          for (const empleado of empleados) {
+              const datos = await obtenerValorTruncas(empleado.idEmpleado[0]);
+              empleadosConValores.push({ ...empleado, datos });
+          }
+  
+          return empleadosConValores;
+      } catch (error) {
+          console.error("Hubo un error al obtener los empleados del Staff", error);
+      } finally {
+          setLoading(false);
+      }
+  };
   
    // Función para obtener el valor de TRUNCAS
    const obtenerValorTruncas = async (idEmpleado) => {
@@ -72,6 +61,7 @@ useEffect(() => {
       try {
           const empleados = await obtenerEmpleadosStaff(); // Espera a que se resuelva la promesa
           console.log(empleados); // Imprime los empleados obtenidos
+
           setEmpleadosStaff(empleados); // Establece el estado con los empleados obtenidos
       } catch (error) {
           console.error('Error al obtener empleados staff:', error); // Maneja errores
